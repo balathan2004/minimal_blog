@@ -1,0 +1,55 @@
+.auth_container{
+  min-height: calc(100vh - 80px);
+  background-color: rgb(235, 229, 229);
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.auth_container article{
+  width: 400px;
+  height: fit-content;
+  margin: 1rem;
+}
+
+.auth_container article h1{
+  text-align: center;
+  line-height: 50px;
+  font-size: 25px;
+}
+
+.auth_container article .error{
+  text-align: center;
+  font-size: 18px;
+  display: block;
+  margin: 1rem 0;
+}
+
+.auth_container article .placeholder , .forget_password{
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 40px;
+}
+
+.auth_container article  .forget_password{
+  text-align: center;
+  line-height: 50px;
+  color: rgb(65, 97, 173);
+}
+
+
+
+.auth_container article .input{
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.auth_container article button{
+  width: 100%;
+  height: 40px;
+  font-size: 18px;
+}
+

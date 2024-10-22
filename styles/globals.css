@@ -1,42 +1,191 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
 * {
-  box-sizing: border-box;
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
 }
 
-a {
-  color: inherit;
+button {
+  cursor: pointer;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  min-height: calc(100vh - 80px);
+  width: 100vw;
+  position: relative;
+  top: 80px;
+  background-color: rgb(235, 229, 229);
+  overflow: auto;
+}
+
+.nav {
+  position: fixed;
+  background: #0082e6;
+  height: 80px;
+  width: 100%;
+  z-index: 1;
+}
+
+.nav .checkbtn {
+  display: none;
+}
+
+.nav ul {
+  list-style: none;
+}
+
+.nav .brand {
+  color: white;
+  font-size: 35px;
+  line-height: 80px;
+  padding: 0 50px;
+  font-weight: bold;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.brand:hover {
+  cursor: pointer;
+  transition: all 0.5s;
+  color: rgb(52, 45, 45);
+}
+
+.nav ul {
+  float: right;
+  margin-right: 20px;
+}
+
+.nav ul li {
+  display: inline-block;
+  line-height: 80px;
+  margin: 0 5px;
+}
+
+.nav li a {
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  padding: 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.nav li a:hover,
+.nav li a:active {
+  background: #169bff;
+  transition: 0.5s;
+}
+
+.nav li .active {
+  background: skyblue;
+  cursor: wait;
+}
+
+.checkbtn {
+  font-size: 30px;
+  color: white;
+  float: right;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.nav input {
+  display: none;
+}
+
+@media (max-width: 958px) {
+  .nav .brand {
+    font-size: 30px;
+    padding-left: 50px;
   }
+  .nav ul li a {
+    font: 16px;
+  }
+}
+
+@media (max-width: 858px) {
+  .nav .checkbtn {
+    display: block;
+  }
+
+  .nav .brand {
+    font-size: 30px;
+  }
+
+  .nav ul {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #2c3e50;
+    top: 80px;
+    left: 0;
+    transition: all 1.2s;
+    text-align: center;
+    display: none;
+  }
+
+  .nav ul li {
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+  }
+
+  .nav ul li a {
+    font-size: 20px;
+  }
+
+  .nav a:hover,
+  .nav a:active {
+    background: none;
+    color: #0082e6;
+  }
+
+  .input:checked ~ .uls {
+    display: block;
+    z-index: 10;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav .brand {
+    font-size: 24px;
+    padding: 0 0 0 10px;
+  }
+}
+
+.loader {
+  border: 7px solid rgb(79, 75, 75);
+  border-top: 7px solid #3498db;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+  position: absolute;
+  top: 30%;
+  left: 45%;
+  z-index: 10;
+  background-color: transparent(241, 238, 238);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.material-symbols-outlined {
+  color: rgb(31, 107, 137);
+  font-size: 22px;
 }

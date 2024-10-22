@@ -1,0 +1,12 @@
+.blog_container{
+  min-height: calc(100vh - 80px);
+  background-color: rgb(235, 229, 229);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
