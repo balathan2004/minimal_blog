@@ -34,13 +34,14 @@ async function post(req: NextApiRequest) {
         const username= fields.username ? fields.username[0]:""
     const file = files.file ? files.file[0] : null;
 
-    const fileName=`${userId}_${new Date().getTime()}.jpg`
+    const postName=`${userId}_${new Date().getTime()}`
+    const fileName=`${postName}.jpg`
     if (file && caption && userId && username) {
       
       const imageUrl=await UploadImage(file, fileName);
       const postData:PostDataInterface={
         post_user_name:username,
-        post_name: fileName,
+        post_name: postName,
         post_caption: caption,
         post_time: setDate(),
         post_user_id: userId,

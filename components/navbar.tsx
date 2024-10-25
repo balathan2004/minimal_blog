@@ -5,17 +5,25 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useContext, useState, useEffect } from "react";
 import { NavbarContext } from "@/pages/_app";
-export type NavBarType={path:string,name:string}[]
-export const ForGuests:NavBarType=[{path:"/blog",name:"blog",},{path:"/auth/login",name:"login",},{path:'/auth/register',name:"register"}]
+export type NavBarType = { path: string; name: string }[];
+export const ForGuests: NavBarType = [
+  { path: "/blog", name: "blog" },
+  { path: "/auth/login", name: "login" },
+  { path: "/auth/register", name: "register" },
+  { path: "/about", name: "about" },
+];
 
-export const ForUsers:NavBarType=[{path:"/blog",name:"blog",},{path:"/create_post",name:"create post",}]
+export const ForUsers: NavBarType = [
+  { path: "/blog", name: "blog" },
+  { path: "/create_post", name: "create post" },
+  { path: "/about", name: "about" },
+];
 
 export default function Navbar() {
   const currentRoute = useRouter().asPath;
 
-  const {dirs}=useContext(NavbarContext)
+  const { dirs } = useContext(NavbarContext);
 
-  
   const [inputValue, setInputValue] = useState<boolean>(false);
 
   const changeInput = () => {
@@ -25,7 +33,6 @@ export default function Navbar() {
   const setInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.checked);
   };
-
 
   return (
     <div>

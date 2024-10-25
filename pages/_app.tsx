@@ -10,6 +10,7 @@ import {
 import { getCookie } from "cookies-next";
 import { ForGuests,ForUsers ,NavBarType} from "@/components/navbar";
 import { GetRequest } from "@/components/get_request";
+import Head from "next/head";
 interface UserCredContextType {
   userCred: UserDataInterface;
   setUserCred: React.Dispatch<React.SetStateAction<UserDataInterface>>;
@@ -55,11 +56,16 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
+    <>
+    <Head>
+      <title>Minimal Blog</title>
+    </Head>
     <UserCredContext.Provider value={{ userCred, setUserCred }}>
       <NavbarContext.Provider value={{dirs,setDirs}}>
       <Navbar />
       <Component {...pageProps} />
       </NavbarContext.Provider>
     </UserCredContext.Provider>
+    </>
   );
 }

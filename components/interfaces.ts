@@ -13,6 +13,19 @@ export interface PostResponseConfig extends ResponseConfig{
 
 }
 
+export interface SinglePostResponseConfig extends ResponseConfig{
+
+  postData:PostDataInterface|null
+
+}
+
+export interface ProfileResponseConfig extends ResponseConfig{
+
+  postData:PostDataInterface[]|null;
+  userData:UserDataInterface|null;
+
+}
+
 export interface UserDataInterface{
   uid:string;
   email:string;

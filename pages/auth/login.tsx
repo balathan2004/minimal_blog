@@ -16,6 +16,7 @@ const SignIn: FC = () => {
 
 
   const [error, setError] = useState("");
+  const [passError,setPassError]=useState(false)
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -29,19 +30,21 @@ const SignIn: FC = () => {
     const noSpacesRegex = /^\S+$/;
     if (userData.password == "") {
       setError("");
+      setPassError(false)
     } else if (!noSpacesRegex.test(userData.password)) {
       setError("Password cannot contain spaces.");
+      setPassError(true)
     }
   }, [userData.password]);
 
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userData.email.length > 5 && userData.password.length > 5 && !error) {
+    if (userData.email.length > 5 && userData.password.length > 5 && !passError) {
       const response = await SendData({
         data: userData,
         route: "/api/auth/login",
       }) as AuthResponseConfig
-
+      console.log("request sent successfully")
       setError(response.message);
 
       if (response.status == 200) {
@@ -98,7 +101,7 @@ const SignIn: FC = () => {
               />
             </div>
             <div>
-              <a className={styles.forget_password} href="/forget_password">
+              <a className={styles.forget_password} href="/auth/forget_password">
                 forget password ?
               </a>
               <button>Login</button>

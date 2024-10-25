@@ -19,6 +19,7 @@ const Register: FC = () => {
 
 
   const [error, setError] = useState("");
+  const [passError,setPassError] = useState(false)
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -32,18 +33,21 @@ const Register: FC = () => {
     const noSpacesRegex = /^\S+$/;
     if (userData.password == "") {
       setError("");
+      setPassError(false)
     } else if (!noSpacesRegex.test(userData.password)) {
       setError("Password cannot contain spaces.");
+      setPassError(true)
     }
   }, [userData.password]);
 
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userData.email.length > 5 && userData.password.length > 5 && !error) {
+    if (userData.email.length > 5 && userData.password.length > 5 && !passError) {
       const response = await SendData({
         data: userData,
         route: "/api/auth/register",
       }) as AuthResponseConfig
+      console.log("request sent")
 
       setError(response.message);
 

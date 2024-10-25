@@ -3,6 +3,7 @@ import { UserCredContext } from "./_app";
 import SendFile from "@/components/sendFile";
 import styles from "@/styles/create_post.module.css"
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const SignIn: FC = () => {
   const [image, setImage] = useState<null | Blob>(null);
@@ -40,6 +41,11 @@ const SignIn: FC = () => {
   };
 
   return (
+    <>
+    <Head>
+      <title>Create Post</title>
+    </Head>
+    
     <div className="container">
       <div className={styles.post_container}>
         <article>
@@ -61,6 +67,7 @@ const SignIn: FC = () => {
         </article>
       </div>
     </div>
+    </>
   );
 };
 
