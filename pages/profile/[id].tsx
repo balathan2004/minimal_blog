@@ -34,7 +34,7 @@ const Profile: FC<Props> = ({ postData, userData }) => {
           <main>
             <h2>User Posts</h2>
             {postData.map((item) => {
-              return <SinglePost postData={item} />;
+              return <SinglePost key={item.post_name}  postData={item} />;
             })}
           </main>
         </div>
