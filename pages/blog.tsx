@@ -11,12 +11,13 @@ const Home: FC<Props> = ({ postData }) => {
   console.log("postData", postData);
   return (
     <div className="container">
+      <div className="container_spacer"></div>
       <div className={styles.blog_container}>
       {postData?.map((item) => (
         <SinglePost key={item.post_name}  postData={item} />
       ))}
       </div>
-      
+      <div className="container_spacer"></div>
     </div>
   );
 };

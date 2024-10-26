@@ -22,8 +22,12 @@ body {
   width: 100vw;
   position: relative;
   top: 80px;
-  background-color: rgb(235, 229, 229);
   overflow: auto;
+  display: flex;
+}
+
+.container_spacer{
+  flex: 1;
 }
 
 .nav {
@@ -188,4 +192,19 @@ body {
 .material-symbols-outlined {
   color: rgb(31, 107, 137);
   font-size: 22px;
+}
+
+@media (max-width: 600px){
+
+  .container_spacer{
+    display: none;
+
+  }
+
+  .container{
+    width: 90%;
+    margin: auto;
+  }
+
+
 }

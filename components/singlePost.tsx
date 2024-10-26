@@ -10,23 +10,23 @@ const SinglePost: FC<Props> = ({ postData }) => {
   return (
     <article className={styles.single_post}>
       <header>
+        <img
+          src={`https://ui-avatars.com/api/?name=${postData.post_user_name}`}
+        />
         <Link href={`/profile/${postData.post_user_id}`}>
-          <img
-            src={`https://ui-avatars.com/api/?name=${postData.post_user_name}`}
-          />
-
           <span>{postData.post_user_name}</span>
         </Link>
       </header>
-      <Link href={`/posts/${postData.post_name}`}>
-        <main>
+
+      <main>
+        <Link href={`/posts/${postData.post_name}`}>
           <img src={postData.post_image_url} />
           <p>
             <span>{postData.post_user_name}</span>
             {postData.post_caption}
           </p>
-        </main>
-      </Link>
+        </Link>
+      </main>
     </article>
   );
 };

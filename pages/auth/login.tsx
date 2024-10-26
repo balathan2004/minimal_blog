@@ -5,6 +5,7 @@ import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { UserCredContext } from "../_app";
 import { useRouter } from "next/router";
+import Link from "next/link";
 const SignIn: FC = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -64,6 +65,7 @@ const SignIn: FC = () => {
 
   return (
     <div className="container">
+         <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Login</h1>
@@ -101,14 +103,18 @@ const SignIn: FC = () => {
               />
             </div>
             <div>
-              <a className={styles.forget_password} href="/auth/forget_password">
+            <Link className={styles.forget_password} href="/auth/register">
+                or create an account
+              </Link>
+              <Link className={styles.forget_password} href="/auth/forget_password">
                 forget password ?
-              </a>
+              </Link>
               <button>Login</button>
             </div>
           </form>
         </article>
       </div>
+      <div className="container_spacer"></div>
     </div>
   );
 };

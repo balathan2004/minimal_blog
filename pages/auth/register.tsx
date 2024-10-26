@@ -5,6 +5,7 @@ import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { UserCredContext } from "../_app";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 const Register: FC = () => {
@@ -68,6 +69,7 @@ const Register: FC = () => {
 
   return (
     <div className="container">
+         <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Register</h1>
@@ -105,14 +107,15 @@ const Register: FC = () => {
               />
             </div>
             <div>
-              <a className={styles.forget_password} href="/forget_password">
-                forget password ?
-              </a>
+              <Link className={styles.forget_password} href="/auth/login">
+                Have An Account Login here !
+              </Link>
               <button>Register</button>
             </div>
           </form>
         </article>
       </div>
+      <div className="container_spacer"></div>
     </div>
   );
 };

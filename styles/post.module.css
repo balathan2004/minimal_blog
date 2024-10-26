@@ -8,6 +8,15 @@
   align-items: center;
   gap: 10px;
   margin: 1rem 0;
+  text-decoration: none;
+}
+
+.single_post header  > a{
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  
 }
 
 
@@ -15,6 +24,11 @@
   height: 50px;
   border-radius: 50%;
   border: 1px solid gray;
+}
+
+.single_post main > a{
+  text-decoration: none;
+  color: inherit;
 }
 
 .single_post main img{
@@ -29,4 +43,13 @@
 
 .single_post main  p span::before{
   content: "@";
+}
+
+@media (max-width: 600px){
+
+.single_post{
+  width: 100%;
+  height: 100%;
+}
+
 }

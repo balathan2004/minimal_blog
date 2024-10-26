@@ -5,6 +5,7 @@ import SendData from "@/components/send_data";
 import { ResponseConfig } from "@/components/interfaces";
 
 import { useRouter } from "next/router";
+import Link from "next/link";
 const ForgetPage: FC = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -45,6 +46,7 @@ const ForgetPage: FC = () => {
 
   return (
     <div className="container">
+            <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Reset Password</h1>
@@ -65,14 +67,15 @@ const ForgetPage: FC = () => {
             </div>
 
             <div>
-              <a className={styles.forget_password} href="/forget_password">
+              <Link className={styles.forget_password} href="/auth/login">
                 Login Here !
-              </a>
+              </Link>
               <button>Create Reset Email</button>
             </div>
           </form>
         </article>
       </div>
+      <div className="container_spacer"></div>
     </div>
   );
 };

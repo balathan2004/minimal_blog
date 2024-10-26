@@ -47,6 +47,7 @@ const SignIn: FC = () => {
     </Head>
     
     <div className="container">
+    <div className="container_spacer"></div>
       <div className={styles.post_container}>
         <article>
         <header>
@@ -66,6 +67,7 @@ const SignIn: FC = () => {
         </form>
         </article>
       </div>
+      <div className="container_spacer"></div>
     </div>
     </>
   );

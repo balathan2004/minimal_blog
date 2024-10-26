@@ -7,6 +7,7 @@ import {
   UserDataInterface,
 } from "@/components/interfaces";
 import SinglePost from "@/components/singlePost";
+import styles from "@/styles/profile.module.css";
 
 interface Props {
   postData: PostDataInterface[] | null;
@@ -17,19 +18,27 @@ const Profile: FC<Props> = ({ postData, userData }) => {
   if (postData && userData) {
     return (
       <div className="container">
-        <header>
-          <img src={userData.profile_url}/>
-          <h1>{userData.display_name}</h1>
-          <h1>{userData.email}</h1>
-          <h1>{userData.created_at}</h1>
-          <h1>{userData.uid}</h1>
+        <div className="container_spacer"></div>
+        <div className={styles.profile_container}>
+          <header>
+            <div className={styles.img_container}>
+              <img src={userData.profile_url} />
+            </div>
 
-        </header>
-        <div>
-          {postData.map((item) => {
-            return <SinglePost postData={item} />;
-          })}
+            <div className={styles.profile_details}>
+              <span className={styles.username}>{userData.display_name}</span>
+              <span>{userData.email}</span>
+              
+            </div>
+          </header>
+          <main>
+            <h2>User Posts</h2>
+            {postData.map((item) => {
+              return <SinglePost postData={item} />;
+            })}
+          </main>
         </div>
+        <div className="container_spacer"></div>
       </div>
     );
   }
