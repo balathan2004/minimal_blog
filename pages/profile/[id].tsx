@@ -8,6 +8,7 @@ import {
 } from "@/components/interfaces";
 import SinglePost from "@/components/singlePost";
 import styles from "@/styles/profile.module.css";
+import Image from "next/image";
 
 interface Props {
   postData: PostDataInterface[] | null;
@@ -22,13 +23,12 @@ const Profile: FC<Props> = ({ postData, userData }) => {
         <div className={styles.profile_container}>
           <header>
             <div className={styles.img_container}>
-              <img src={userData.profile_url} />
+              <Image alt="error loading image" src={userData.profile_url} />
             </div>
 
             <div className={styles.profile_details}>
               <span className={styles.username}>{userData.display_name}</span>
               <span>{userData.email}</span>
-              
             </div>
           </header>
           <main>

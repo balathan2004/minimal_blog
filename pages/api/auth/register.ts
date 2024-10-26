@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   AuthResponseConfig,
   DummyUserData,
-  ResponseConfig,
+  
 } from "@/components/interfaces";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { generateFromEmail } from "unique-username-generator";

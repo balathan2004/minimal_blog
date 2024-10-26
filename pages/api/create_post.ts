@@ -57,7 +57,7 @@ async function UploadImage(file: formidable.File, fileName: string) {
 
   try {
     const storageRef = ref(storage, `/posts/${fileName}`);
-    const uploadTask = await uploadBytesResumable(storageRef, blob, {
+    await uploadBytesResumable(storageRef, blob, {
       contentType: "image/jpeg",
     });
     var imageUrl = await getDownloadURL(storageRef);

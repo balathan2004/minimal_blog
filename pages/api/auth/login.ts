@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { AuthResponseConfig, ResponseConfig } from "@/components/interfaces";
+import { AuthResponseConfig } from "@/components/interfaces";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth, firestore } from "@/components/firebase/config";

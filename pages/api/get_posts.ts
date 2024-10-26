@@ -19,6 +19,7 @@ export default async function (
       postData: postData,
     });
   } catch (err) {
+    console.log(err)
     res.json({ status: 400, message: "error fetching docs", postData: [] });
   }
 }
