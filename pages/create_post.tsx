@@ -50,6 +50,7 @@ const SignIn: FC = () => {
     <div className="container_spacer"></div>
       <div className={styles.post_container}>
         <article>
+          <h1>Create Post</h1>
         <header>
           <img src={userCred.profile_url}></img>
           <span>{userCred.display_name}</span>

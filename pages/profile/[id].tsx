@@ -23,8 +23,9 @@ const Profile: FC<Props> = ({ postData, userData }) => {
         <div className={styles.profile_container}>
           <header>
             <div className={styles.img_container}>
-              <Image alt="error loading image" src={userData.profile_url} />
-            </div>
+              
+              <img alt="error loading image" src={userData.profile_url} />
+</div>
 
             <div className={styles.profile_details}>
               <span className={styles.username}>{userData.display_name}</span>

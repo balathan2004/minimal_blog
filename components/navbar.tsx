@@ -7,16 +7,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { NavbarContext } from "@/pages/_app";
 export type NavBarType = { path: string; name: string }[];
 export const ForGuests: NavBarType = [
+  { path: "/", name: "home" },
   { path: "/blog", name: "blog" },
   { path: "/auth/login", name: "login" },
   { path: "/auth/register", name: "register" },
-  { path: "/about", name: "about" },
+
 ];
 
 export const ForUsers: NavBarType = [
+  { path: "/", name: "home" },
   { path: "/blog", name: "blog" },
   { path: "/create_post", name: "create post" },
-  { path: "/about", name: "about" },
+ 
 ];
 
 export default function Navbar() {

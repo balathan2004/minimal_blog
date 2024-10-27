@@ -1,6 +1,6 @@
 .post_container{
   min-height: calc(100vh - 80px);
-  background-color: rgb(235, 229, 229);
+
   overflow: auto;
   display: flex;
   justify-content: center;
@@ -13,6 +13,11 @@
   min-height: 400px;
   height: fit-content;
   margin: 1rem;
+}
+
+.post_container article h1{
+  text-align: center;
+  margin: 1rem 0;
 }
 
 .post_container article header{

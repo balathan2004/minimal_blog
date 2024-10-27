@@ -1,0 +1,34 @@
+.inner_container{
+  min-height: 100%;
+  width: 100%;
+  margin: 1rem;
+}
+
+.inner_container header{
+margin: 1rem 0;
+}
+
+.inner_container header h1{
+  line-height: 70px;
+}
+
+
+.inner_container header p{
+  font-size: 20px;
+}
+
+
+.inner_container section{
+  margin: 2rem 0;
+}
+
+
+.inner_container section h2{
+line-height: 50px;
+}
+
+.inner_container section li{
+  list-style: none;
+  margin: 1rem 0;
+  font-size: 18px;
+}
