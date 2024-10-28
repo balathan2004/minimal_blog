@@ -43,7 +43,7 @@ export const getServerSideProps = async (
 
     const apiUrl =
       process.env.NODE_ENV === "production"
-        ? `${process.env.DOMAIN_URL}/api/get_single_post?post_name=${id}`
+        ? `${process.env.DOMAIN_URL}`+`/api/get_single_post?post_name=${id}`
         : `http://localhost:3000/api/get_single_post?post_name=${id}`;
 
         console.log(process.env.DOMAIN_URL)
