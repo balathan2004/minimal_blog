@@ -2,33 +2,48 @@
   min-height: 100%;
   width: 100%;
   margin: 1rem;
+  display: flex;
 }
 
-.inner_container header{
+.content{
+  max-width: 600px;
+}
+
+.content header{
 margin: 1rem 0;
 }
 
-.inner_container header h1{
+.content header h1{
   line-height: 70px;
 }
 
 
-.inner_container header p{
+.content header p{
   font-size: 20px;
 }
 
 
-.inner_container section{
+.content section{
   margin: 2rem 0;
 }
 
 
-.inner_container section h2{
+.content section h2{
 line-height: 50px;
 }
 
-.inner_container section li{
+.content section li{
   list-style: none;
   margin: 1rem 0;
   font-size: 18px;
+}
+
+
+@media (max-width: 600px){
+
+  .inner_container{
+    margin: 1rem 0;
+  }
+
+
 }

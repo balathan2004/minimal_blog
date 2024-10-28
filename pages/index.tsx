@@ -10,7 +10,10 @@ export default function Home() {
       </Head>
 
       <div className="container">
+        
         <div className={styles.inner_container}>
+          <div className="container_spacer"></div>
+          <div className={styles.content}>
           <header>
             <h1>
               Welcome to <strong>Minimal Blog</strong>
@@ -79,6 +82,8 @@ export default function Home() {
               and capturing moments now!
             </p>
           </footer>
+          </div>
+          <div className="container_spacer"></div>
         </div>
       </div>
     </>
