@@ -198,12 +198,10 @@ body {
 
   .container_spacer{
     display: none;
-
   }
 
   .container{
-    width: 90%;
-    margin: auto;
+    width: 100%;
   }
 
 

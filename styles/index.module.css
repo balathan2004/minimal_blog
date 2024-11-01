@@ -42,7 +42,8 @@ line-height: 50px;
 @media (max-width: 600px){
 
   .inner_container{
-    margin: 1rem 0;
+    margin: 1rem auto;
+    width: 95%;
   }
 
 

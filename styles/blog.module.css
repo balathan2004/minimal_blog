@@ -1,4 +1,4 @@
-.blog_container{
+.blog_container {
   min-height: calc(100vh - 80px);
   overflow: auto;
   display: flex;
@@ -7,3 +7,9 @@
   height: 100%;
 }
 
+@media (max-width: 600px) {
+  .blog_container {
+    width: 95%;
+    margin: auto;
+  }
+}

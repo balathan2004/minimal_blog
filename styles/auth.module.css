@@ -53,3 +53,9 @@
   font-size: 18px;
 }
 
+
+@media (max-width: 600px){
+.auth_container{
+  width: 100%;
+}
+}

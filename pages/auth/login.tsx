@@ -53,7 +53,7 @@ const SignIn: FC = () => {
         setUserCred(response.credentials)
         console.log("Login successful");
         setTimeout(() => {
-        router.push("/")
+        router.push("/blog")
           console.log("Redirecting to Homepage")
         },3000)
       } else {

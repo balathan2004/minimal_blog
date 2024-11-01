@@ -56,7 +56,7 @@ const Register: FC = () => {
         setUserCred(response.credentials)
         // Login successful
         setTimeout(() => {
-          router.push("/")
+          router.push("/blog")
           console.log("Redirecting to Homepage")
         },3000)
         console.log("Account Created successful");
