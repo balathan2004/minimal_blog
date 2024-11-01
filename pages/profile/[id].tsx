@@ -62,6 +62,8 @@ export const getServerSideProps = async (
     const response = await fetch(apiUrl);
     const res: ProfileResponseConfig = await response.json();
 
+    console.log(res)
+
     if (res.status === 200) {
       return {
         props: { postData: res.postData, userData: res.userData },
