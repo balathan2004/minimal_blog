@@ -69,6 +69,8 @@ export const getServerSideProps = async (
       return { props: { postData: null } };
     }
 
+    
+  } catch (e) {
     return { props: { postData: null } };
-  } catch (e) {}
+  }
 };
