@@ -4,6 +4,8 @@ import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { UserCredContext } from "../_app";
+import { ForUsers } from "@/components/navbar";
+import { NavbarContext } from "../_app";
 import { useRouter } from "next/router";
 import Link from "next/link";
 const SignIn: FC = () => {
@@ -14,6 +16,8 @@ const SignIn: FC = () => {
   const router=useRouter()
 
   const { setUserCred } = useContext(UserCredContext);
+  const {setDirs}=useContext(NavbarContext)
+
 
 
   const [error, setError] = useState("");
@@ -49,7 +53,7 @@ const SignIn: FC = () => {
       setError(response.message);
 
       if (response.status == 200) {
-        // Login successful
+        setDirs(ForUsers)
         setUserCred(response.credentials)
         console.log("Login successful");
         setTimeout(() => {

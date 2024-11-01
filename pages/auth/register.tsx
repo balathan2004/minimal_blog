@@ -4,6 +4,8 @@ import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { UserCredContext } from "../_app";
+import { ForUsers } from "@/components/navbar";
+import { NavbarContext } from "../_app";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -16,6 +18,7 @@ const Register: FC = () => {
   });
 
   const { setUserCred } = useContext(UserCredContext);
+  const {setDirs}=useContext(NavbarContext)
 
 
 
@@ -54,6 +57,7 @@ const Register: FC = () => {
 
       if (response.status == 200) {
         setUserCred(response.credentials)
+        setDirs(ForUsers)
         // Login successful
         setTimeout(() => {
           router.push("/blog")
