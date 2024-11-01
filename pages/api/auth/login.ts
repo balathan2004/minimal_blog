@@ -35,6 +35,7 @@ export default async function handler(
             maxAge: 900000,
             httpOnly: false,
             sameSite: "none",
+            secure: true,
           });
           res.json({
             message: "login success",
