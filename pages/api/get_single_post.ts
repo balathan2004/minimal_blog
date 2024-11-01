@@ -8,6 +8,7 @@ export default async function(req:NextApiRequest,res:NextApiResponse<SinglePostR
   const post_name=req.query.post_name as string 
 
   if(post_name){
+    console.log(post_name)
 
   const docRef=doc(firestore,'posts',post_name);
    const docSnap=await getDoc(docRef)
