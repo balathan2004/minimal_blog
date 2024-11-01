@@ -16,6 +16,7 @@ interface Props {
 }
 
 const Profile: FC<Props> = ({ postData, userData }) => {
+  console.log(postData,userData);
   if (postData && userData) {
     return (
       <div className="container">
