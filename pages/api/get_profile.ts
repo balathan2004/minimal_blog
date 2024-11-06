@@ -13,11 +13,13 @@ import {
   ProfileResponseConfig,
   UserDataInterface,
 } from "@/components/interfaces";
+import { cors } from "@/libs/cors";
 export default async function (
   req: NextApiRequest,
   res: NextApiResponse<ProfileResponseConfig>
 ) {
   try {
+    if(cors(req,res)) return;
     const userId = req.query.userId as string;
     console.log(userId);
 
