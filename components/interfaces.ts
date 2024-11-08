@@ -43,7 +43,6 @@ profile_url:""
 }
 
 export interface PostDataInterface{
-
   post_name:string;
   post_caption:string;
   post_time:string;

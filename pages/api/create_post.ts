@@ -9,6 +9,7 @@ import { uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import fs from "fs";
 import { ref } from "@firebase/storage";
 import {doc,setDoc} from 'firebase/firestore'
+import { cors } from "@/libs/cors";
 export const config = {
   api: {
     bodyParser: false,
@@ -19,6 +20,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
+  if(cors(req,res)) return;
   console.log("requested");
   await post(req);
   res.json({ message: "success", status: 200 });

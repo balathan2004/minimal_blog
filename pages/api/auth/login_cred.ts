@@ -5,12 +5,14 @@ import { firestore } from "@/components/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
+import { cors } from "@/libs/cors";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
 ) {
   try {
+    if(cors(req,res)) return;
     const userId = req.cookies["minimal_blog_uid"] || false;
 
     if (userId) {

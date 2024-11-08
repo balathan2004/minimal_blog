@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { cors } from "@/libs/cors";
 import { auth, firestore } from "@/components/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
@@ -17,6 +17,7 @@ export default async function handler(
   try {
     const { email, password } = req.body;
     console.log(email, password);
+    if(cors(req,res)) return;
     if (email && password) {
       const userId =
         (await signInWithEmailAndPassword(auth, email, password)).user.uid ||
