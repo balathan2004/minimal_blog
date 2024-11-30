@@ -11,8 +11,10 @@ export default (req:NextApiRequest, res:NextApiResponse)=>{
     
     if(req.method=="POST"){
         console.log(req.body);
+        const {name}=(req.body)
+        res.json({message:"success",name:name});
     }
 
-    res.json({message:"success"})
+  
 
 }
