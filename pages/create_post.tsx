@@ -25,7 +25,7 @@ const SignIn: FC = () => {
       const response= await SendFile({data: form,route:"https://minimal-blog-ivory.vercel.app/api/create"})
       console.log(response)
        if(response.status==200){
-       // router.push('/blog')
+        router.push('/blog')
        } 
     }else{
       console.error("All fields are required");

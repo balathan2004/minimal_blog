@@ -11,6 +11,7 @@ export function cors(req:NextApiRequest, res:NextApiResponse) {
   if (origin && allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", "*");
   } else {
+    console.log("blocked for no access",origin)
     res.setHeader("Access-Control-Allow-Origin","null");
     res.status(403).json({ error: "Origin not allowed" });
     return true;

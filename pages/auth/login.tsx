@@ -59,7 +59,7 @@ const SignIn: FC = () => {
         setTimeout(() => {
         router.push("/blog")
           console.log("Redirecting to Homepage")
-        },3000)
+        },2000)
       } else {
         // Login failed
         console.error("Login failed");
