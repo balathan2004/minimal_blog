@@ -21,8 +21,14 @@ export default async function handler(
   res: NextApiResponse<ResponseConfig>
 ) {
   if (cors(req, res)) return;
+  try{
+    await post(req);
+  }catch(err){
+    console.error(err);
+    res.status(400).json({ message: "Error processing request", status: 400 });
+  }
   console.log("requested");
-  await post(req);
+  
   res.json({ message: "success", status: 200 });
 }
 
@@ -36,7 +42,7 @@ async function post(req: NextApiRequest) {
         console.log(err);
         reject(err);
       }
-      console.log(fields, files);
+     
       const caption = fields.caption ? fields.caption[0] : "";
       const userId = fields.userId ? fields.userId[0] : "";
       const username = fields.username ? fields.username[0] : "";
