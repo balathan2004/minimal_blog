@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 // lib/cors.js
-const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000'];
+//const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000'];
+const allowedOrigins = ["*"]
 
 export function cors(req:NextApiRequest, res:NextApiResponse) {
   const origin = req.headers.origin;
