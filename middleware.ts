@@ -5,7 +5,7 @@ const middleware = (request: NextRequest) => {
 
   const clientType = cookies.get("minimal_blog_uid")?.value;
 
-  if (nextUrl.pathname.includes("/create_post") && !clientType) {
+  if (nextUrl.pathname.includes("/create") && !clientType) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
