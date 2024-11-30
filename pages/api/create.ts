@@ -61,7 +61,7 @@ async function post(req: NextApiRequest) {
     });
   });
   if(postData){
-   
+    console.log(postData,"postdata to firebase");
     await AddDoc(postData);
   }
  
