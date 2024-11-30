@@ -22,6 +22,7 @@ export default async function handler(
 ) {
   if (cors(req, res)) return;
   try{
+    console.log("origin is ",req.headers.origin)
     await post(req);
   }catch(err){
     console.error(err);
