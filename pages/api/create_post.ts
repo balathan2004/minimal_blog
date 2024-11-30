@@ -20,6 +20,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
+
+  console.log("origin is ",req.headers)
   if (cors(req, res)) return;
   try{
     console.log("origin is ",req.headers.origin)
