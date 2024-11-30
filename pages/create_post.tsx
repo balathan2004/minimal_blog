@@ -22,7 +22,7 @@ const SignIn: FC = () => {
       form.append("caption", caption);
       form.append("userId", userCred.uid);
       form.append("username", userCred.display_name);
-      const response= await SendFile({data: form,route:"https://minimal-blog-ivory.vercel.app/api/create"})
+      const response= await SendFile({data: form,route:"/api/create"})
       console.log(response)
        if(response.status==200){
        // router.push('/blog')

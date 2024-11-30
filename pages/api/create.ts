@@ -50,6 +50,8 @@ async function post(req: NextApiRequest) {
         post_image_url: imageUrl,
       }
       await AddDoc(postData);
+
+      console.log("doc addeed")
     }
   });
 }
