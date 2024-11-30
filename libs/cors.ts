@@ -7,8 +7,10 @@ const allowedOrigins = ["*"]
 export function cors(req:NextApiRequest, res:NextApiResponse) {
   const origin = req.headers.origin;
 
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+  if (allowedOrigins.includes("*")) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  } else if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
   }
   
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
