@@ -7,7 +7,7 @@ const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000'];
 export function cors(req:NextApiRequest, res:NextApiResponse) {
   const origin = req.headers.origin;
 
-  if (allowedOrigins.includes("*")) {
+  if (origin && allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", "*");
   } 
   
