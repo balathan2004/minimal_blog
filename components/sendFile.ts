@@ -9,6 +9,9 @@ export default async function SendFile({ data, route }: Props) {
   const RequestConfig: RequestInit = {
     body: data,
     method: "POST",
+    headers:{
+      "minimal-access-token":"light@blog2406"
+    }
   };
 
   const response = await fetch(route, RequestConfig);

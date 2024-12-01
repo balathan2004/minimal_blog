@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const response = await fetch(apiUrl,{
     method: 'GET',
     headers:{
-      "Origin": "http://localhost:3000"
+      "minimal-access-token":"light@blog2406"
     }
   });
   const res: PostResponseConfig = await response.json();
