@@ -2,8 +2,8 @@ import { NextApiRequest,NextApiResponse} from "next";
 import { PostDataInterface, SinglePostResponseConfig } from "@/components/interfaces";
 import { firestore } from "@/components/firebase/config";
 import { getDoc,doc } from "firebase/firestore";
-
-export default async function(req:NextApiRequest,res:NextApiResponse<SinglePostResponseConfig>){
+import cors from "@/libs/cors";
+ async function handler(req:NextApiRequest,res:NextApiResponse<SinglePostResponseConfig>){
 
 
 
@@ -33,3 +33,5 @@ export default async function(req:NextApiRequest,res:NextApiResponse<SinglePostR
 
 
 }
+
+export default cors(handler as any)

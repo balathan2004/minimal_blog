@@ -8,8 +8,9 @@ import { FirebaseError } from "firebase/app";
 import { setCookie } from "cookies-next";
 import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
+import cors from "@/libs/cors";
 
-export default async function handler(
+ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
 ) {
@@ -70,3 +71,5 @@ export default async function handler(
     }
   }
 }
+
+export default cors(handler as any)

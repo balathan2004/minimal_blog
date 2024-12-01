@@ -13,8 +13,9 @@ import {
   ProfileResponseConfig,
   UserDataInterface,
 } from "@/components/interfaces";
+import cors from "@/libs/cors";
 
-export default async function (
+async function handler (
   req: NextApiRequest,
   res: NextApiResponse<ProfileResponseConfig>
 ) {
@@ -69,3 +70,6 @@ export default async function (
     });
   }
 }
+
+
+export default cors(handler as any)

@@ -9,6 +9,7 @@ import { uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import fs from "fs";
 import { ref } from "@firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import cors from "@/libs/cors";
 
 export const config = {
   api: {
@@ -16,7 +17,7 @@ export const config = {
   },
 };
 
-export default async function handler(
+ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
@@ -102,3 +103,5 @@ const setDate = () => {
   var newDate = moment(nowDate).format("DD-MM-YYYY hh:mm a");
   return newDate;
 };
+
+export default cors(handler as any)

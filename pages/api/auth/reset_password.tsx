@@ -4,10 +4,11 @@ import {  ResponseConfig } from "@/components/interfaces";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/components/firebase/config";
 import { FirebaseError } from "firebase/app";
+import cors from "@/libs/cors";
 
 
 
-export default async function handler(
+ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
@@ -43,3 +44,6 @@ export default async function handler(
     }
   }
 }
+
+
+export default cors(handler as any)
