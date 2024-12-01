@@ -42,6 +42,8 @@ async function post(req: NextApiRequest) {
   const postData = await new Promise<PostDataInterface|null>((resolve, reject)=>{
     form.parse(req, async (err, fields, files) => {
 
+      console.log(fields,files)
+
       if(err){
         console.log(err);
         reject(err);
