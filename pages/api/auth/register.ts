@@ -12,14 +12,13 @@ import { doc, setDoc } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
 import { setCookie } from "cookies-next";
 import { UserDataInterface } from "@/components/interfaces";
-import { cors } from "@/libs/cors";
+
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
 ) {
   try {
-    if(cors(req,res)) return;
     const { email, password } = req.body;
     console.log(email, password);
     if (email && password) {

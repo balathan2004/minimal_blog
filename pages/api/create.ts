@@ -9,7 +9,7 @@ import { uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import fs from "fs";
 import { ref } from "@firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import { cors } from "@/libs/cors";
+
 export const config = {
   api: {
     bodyParser: false,
@@ -22,7 +22,7 @@ export default async function handler(
 ) {
 
   console.log("origin is ",req.headers.origin)
-  if (cors(req, res)) return;
+
   try{
 
     await post(req);

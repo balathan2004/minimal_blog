@@ -2,10 +2,10 @@ import { NextApiRequest,NextApiResponse} from "next";
 import { PostDataInterface, SinglePostResponseConfig } from "@/components/interfaces";
 import { firestore } from "@/components/firebase/config";
 import { getDoc,doc } from "firebase/firestore";
-import { cors } from "@/libs/cors";
+
 export default async function(req:NextApiRequest,res:NextApiResponse<SinglePostResponseConfig>){
 
-  if(cors(req,res)) return;
+
 
   const post_name=req.query.post_name as string 
 

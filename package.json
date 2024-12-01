@@ -16,8 +16,10 @@
     "@mui/icons-material": "^6.1.4",
     "@mui/material": "^6.1.4",
     "cookies-next": "^4.3.0",
+    "cors": "^2.8.5",
     "firebase": "^10.14.1",
     "formidable": "^3.5.2",
+    "micro-cors": "^0.1.1",
     "moment": "^2.30.1",
     "next": "14.2.15",
     "react": "^18",
@@ -26,7 +28,9 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/formidable": "^3.4.5",
+    "@types/micro-cors": "^0.1.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
