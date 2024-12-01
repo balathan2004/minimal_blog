@@ -38,8 +38,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const [dirs,setDirs]=useState(ForGuests);
 
   async function GetCred() {
-    const minimal_blog_uid = getCookie("minimal_blog_uid") || false;
-    if (minimal_blog_uid) {
+  //  const minimal_blog_uid = getCookie("minimal_blog_uid") || false;
+    
       const response = (await GetRequest(
         "/api/auth/login_cred"
       )) as AuthResponseConfig;
@@ -47,7 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
         setUserCred(response.credentials);
         setDirs(ForUsers)
       }
-    }
+    
   }
 
   useEffect(() => {
