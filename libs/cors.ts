@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 // lib/cors.js
-const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000'];
+const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000',"https://minimal-blog-ivory.vercel.app"];
 //const allowedOrigins = ["*"]
 
 export function cors(req:NextApiRequest, res:NextApiResponse) {
@@ -9,6 +9,7 @@ export function cors(req:NextApiRequest, res:NextApiResponse) {
 
 
   if (origin && allowedOrigins.includes(origin)) {
+    console.log("origin allowed",origin)
     res.setHeader("Access-Control-Allow-Origin", "*");
   } else {
     console.log("blocked for no access",origin)
