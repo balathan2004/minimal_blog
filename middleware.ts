@@ -9,6 +9,8 @@ const ALLOWED_ORIGINS = [
 const middleware = (request: NextRequest) => {
   const { headers, method, cookies, nextUrl } = request;
 
+  console.log(headers);
+
   const clientType = cookies.get("minimal_blog_uid")?.value;
 
   // Handle API routes with CORS
