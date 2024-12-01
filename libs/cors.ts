@@ -5,8 +5,13 @@ const allowedOrigins = ['http://localhost:8081', 'http://localhost:3000',"https:
 //const allowedOrigins = ["*"]
 
 export function cors(req:NextApiRequest, res:NextApiResponse) {
-  const origin = req.headers.origin;
+  console.log(req.headers)
+  const origin = req.headers.origin ||false;
 
+  if (!origin) {
+    console.log("Same-origin request detected, skipping CORS.");
+    return false;
+  }
 
   if (origin && allowedOrigins.includes(origin)) {
     console.log("origin allowed",origin)

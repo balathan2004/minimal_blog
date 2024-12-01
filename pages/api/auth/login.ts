@@ -30,13 +30,13 @@ export default async function handler(
 
         if (userDoc.exists()) {
           const userData = userDoc.data() as UserDataInterface;
-          setCookie("minimal_blog_uid", userData.uid, {
+         setCookie("minimal_blog_uid", userData.uid, {
             req,
             res,
             maxAge: 900000,
             httpOnly: false,
             sameSite: "none",
-            secure: true,
+            secure: false,
           });
           res.json({
             message: "login success",

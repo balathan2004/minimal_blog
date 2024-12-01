@@ -52,7 +52,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     GetCred();
-
   }, []);
 
   return (
