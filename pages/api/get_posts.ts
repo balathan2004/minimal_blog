@@ -2,8 +2,8 @@ import { firestore } from "@/components/firebase/config";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getDocs, collection } from "firebase/firestore";
 import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
-
-export default async function (
+import cors from "@/libs/cors";
+ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PostResponseConfig>
 ) {
@@ -25,3 +25,5 @@ export default async function (
     res.json({ status: 400, message: "error fetching docs", postData: [] });
   }
 }
+
+export default cors(handler as any);
