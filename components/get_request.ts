@@ -7,6 +7,7 @@ export const GetRequest=async(route:string)=>{
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Origin":"http://localhost:3000"
     },
   }
 
