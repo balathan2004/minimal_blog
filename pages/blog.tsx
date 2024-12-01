@@ -31,7 +31,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
       : "http://localhost:3000/api/get_posts";
 
   console.log("url", apiUrl);
-  const response = await fetch(apiUrl);
+  const response = await fetch(apiUrl,{
+    method: 'GET',
+    headers:{
+      "Origin": "http://localhost:3000"
+    }
+  });
   const res: PostResponseConfig = await response.json();
 
   return {
