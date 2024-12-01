@@ -25,13 +25,13 @@ export const config = {
   console.log("origin is ",req.headers.origin)
 
   try{
-
+console.log("trying")
     await post(req);
   }catch(err){
     console.error(err);
     res.status(400).json({ message: "Error processing request", status: 400 });
   }
-  console.log("requested");
+ 
   
   res.json({ message: "success", status: 200 });
 }
@@ -54,6 +54,7 @@ async function post(req: NextApiRequest) {
 
       const postName = `${userId}_${new Date().getTime()}`;
       const fileName = `${postName}.jpg`;
+      console.log(file && caption && userId && username)
       if (file && caption && userId && username) {
         const imageUrl = await UploadImage(file, fileName);
         const postData: PostDataInterface = {
