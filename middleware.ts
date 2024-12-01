@@ -48,4 +48,9 @@ const middleware = (request: NextRequest) => {
   return NextResponse.next();
 };
 
+
+export const config = {
+  matcher: ["/api/:path*", "/create_post"],
+};
+
 export default middleware;
