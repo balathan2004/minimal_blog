@@ -20,6 +20,7 @@ import cors from "@/libs/cors";
 ) {
   try {
     const { email, password } = req.body;
+    const isSecure=process.env.NODE_ENV === "production"?true : false;
     console.log(email, password);
     if (email && password) {
       const username = generateFromEmail(email, 5);
@@ -45,7 +46,7 @@ import cors from "@/libs/cors";
         maxAge: 900000,
         httpOnly: false,
         sameSite: "none",
-        secure: true,
+        secure: isSecure,
       });
 
       res.json({

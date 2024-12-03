@@ -17,6 +17,7 @@ import cors from "@/libs/cors";
   try {
     const { email, password } = req.body;
     console.log(email, password);
+    const isSecure=process.env.NODE_ENV === "production"?true : false;
    
     if (email && password) {
       const userId =
@@ -36,7 +37,7 @@ import cors from "@/libs/cors";
             maxAge: 900000,
             httpOnly: false,
             sameSite: "none",
-            secure: false,
+            secure: isSecure,
           });
           res.json({
             message: "login success",

@@ -22,7 +22,8 @@ const SignIn: FC = () => {
       form.append("caption", caption);
       form.append("userId", userCred.uid);
       form.append("username", userCred.display_name);
-      const response= await SendFile({data: form,route:"https://minimal-blog-ivory.vercel.app/api/create"})
+      const response= await SendFile({data: form,route:"http://localhost:3000/api"})
+      //https://minimal-blog-ivory.vercel.app/api/create
       console.log(response)
        if(response.status==200){
         router.push('/blog')
@@ -36,6 +37,7 @@ const SignIn: FC = () => {
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files;
     if (file && file.length > 0) {
+      
       setImage(file[0]);
       setShowImage(URL.createObjectURL(file[0]));
     }
