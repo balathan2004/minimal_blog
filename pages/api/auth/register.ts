@@ -1,11 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { ResponseConfig } from "@/components/interfaces";
 import {
-  AuthResponseConfig,
-  DummyUserData,
-  
-} from "@/components/interfaces";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { generateFromEmail } from "unique-username-generator";
 import { auth, firestore } from "@/components/firebase/config";
 import { doc, setDoc } from "firebase/firestore";
@@ -14,60 +13,53 @@ import { setCookie } from "cookies-next";
 import { UserDataInterface } from "@/components/interfaces";
 import cors from "@/libs/cors";
 
- async function handler(
+async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<AuthResponseConfig>
+  res: NextApiResponse<ResponseConfig>
 ) {
   try {
-    const { email, password } = req.body;
-    const isSecure=process.env.NODE_ENV === "production"?true : false;
-    console.log(email, password);
-    if (email && password) {
-      const username = generateFromEmail(email, 5);
+    const { email, password }: { email: string; password: string } = req.body;
 
-      const UserDoc =
-        (await createUserWithEmailAndPassword(auth, email, password)).user ||
-        null;
-
-      const NewUserDoc: UserDataInterface = {
-        uid: UserDoc?.uid,
-        email: UserDoc?.email || "",
-        display_name: username || "",
-        created_at:
-          UserDoc.metadata.creationTime || new Date().getTime().toString(),
-        profile_url: `https://ui-avatars.com/api/?name=${username}`,
-      };
-
-      const docRef = doc(firestore, "/users", NewUserDoc.uid);
-      await setDoc(docRef, NewUserDoc);
-      setCookie("minimal_blog_uid", NewUserDoc.uid, {
-        req,
-        res,
-        maxAge: 900000,
-        httpOnly: false,
-        sameSite: "none",
-        secure: isSecure,
-      });
-
+    if (!email || !password) {
       res.json({
-        message: "login success",
-        status: 200,
-        credentials: NewUserDoc,
-      });
-    } else {
-      res.json({
-        message: "login failed",
+        message: "field values missing",
         status: 300,
-        credentials: DummyUserData,
       });
+      return;
     }
+    const isSecure = process.env.NODE_ENV === "production" ? true : false;
+
+    const username = generateFromEmail(email, 5);
+
+    const userDoc =
+      (await createUserWithEmailAndPassword(auth, email, password)).user ||
+      null;
+
+    const NewUserDoc: UserDataInterface = {
+      uid: userDoc?.uid,
+      email: userDoc?.email || "",
+      display_name: username || "",
+      created_at:
+        userDoc.metadata.creationTime || new Date().getTime().toString(),
+      profile_url: `https://ui-avatars.com/api/?name=${username}`,
+    };
+
+    const docRef = doc(firestore, "/users", NewUserDoc.uid);
+    await setDoc(docRef, NewUserDoc);
+    if (userDoc) {
+      await sendEmailVerification(userDoc);
+    }
+
+    res.json({
+      message: "Verification Mail sent to inbox",
+      status: 200,
+    });
   } catch (err) {
     if (err instanceof FirebaseError) {
       console.log(err.message);
       res.json({
         message: err.message,
         status: 300,
-        credentials: DummyUserData,
       });
     } else {
       console.log(err);
@@ -75,11 +67,9 @@ import cors from "@/libs/cors";
       res.json({
         message: "login failed",
         status: 300,
-        credentials: DummyUserData,
       });
     }
   }
 }
 
-
-export default cors(handler as any)
+export default cors(handler as any);

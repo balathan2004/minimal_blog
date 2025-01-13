@@ -3,50 +3,49 @@ import { TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { ResponseConfig } from "@/components/interfaces";
-
+import { useReplyContext } from "@/components/context/Reply_context";
+import { useLoadingContext } from "@/components/context/loading_context";
 import { useRouter } from "next/router";
 import Link from "next/link";
 const ForgetPage: FC = () => {
-  const [userData, setUserData] = useState({
-    email: "",
-  });
+  const [email, setEmail] = useState("");
   const router = useRouter();
+  const { setReply } = useReplyContext();
+  const { setLoading } = useLoadingContext();
 
   const [error, setError] = useState("");
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    if (value) {
-      setUserData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userData.email) {
-      const response = (await SendData({
-        data: userData,
-        route: "/api/auth/reset_password",
-      })) as ResponseConfig;
 
-      setError(response.message);
+    if (!email) {
+      setReply("Email is Missing");
+      return;
+    }
 
-      if (response.status == 200) {
-        setTimeout(() => {
-          router.push("/login");
-          console.log("Redirecting to Homepage");
-        }, 3000);
-      } else {
-        // Login failed
-        console.error("Login failed");
-      }
+    setLoading(true)
+
+    const response = (await SendData({
+      data: { email },
+      route: "/api/auth/reset_password",
+    })) as ResponseConfig;
+
+    setError(response.message);
+    setReply(response.message);
+    setLoading(false)
+    if (response.status == 200) {
+      setTimeout(() => {
+        router.push("/auth/login");
+        console.log("Redirecting to Homepage");
+      }, 3000);
+    } else {
+      console.error("Login failed");
     }
   };
 
   return (
     <div className="container">
-            <div className="container_spacer"></div>
+      <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Reset Password</h1>
@@ -55,6 +54,7 @@ const ForgetPage: FC = () => {
             <div>
               <label className={styles.placeholder}>Email</label>
               <TextField
+                fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -62,7 +62,7 @@ const ForgetPage: FC = () => {
                 variant="outlined"
                 name="email"
                 type="email"
-                onChange={handleInput}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
 

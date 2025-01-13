@@ -1,15 +1,13 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import IncomingForm from "formidable";
 import { PostDataInterface, ResponseConfig } from "@/components/interfaces";
 import formidable from "formidable";
-import moment from "moment";
 import { firestore, storage } from "@/components/firebase/config";
 import { uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import fs from "fs";
 import { ref } from "@firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import cors from "@/libs/cors";
+import sharp from "sharp";
 
 export const config = {
   api: {
@@ -17,82 +15,121 @@ export const config = {
   },
 };
 
- async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
+  console.log("Origin is: ", req.headers.origin);
 
-  console.log("origin is ",req.headers.origin)
-
-  try{
-console.log("trying")
+  try {
+    console.log("Processing request...");
     await post(req);
-  }catch(err){
-    console.error(err);
-    res.status(400).json({ message: "Error processing request", status: 400 });
+    res.status(200).json({ message: "Success", status: 200 });
+  } catch (err: any) {
+    console.error("Error processing request:", err.message);
+    res.status(400).json({ message: err.message, status: 400 });
   }
- 
-  
-  res.json({ message: "success", status: 200 });
 }
 
 async function post(req: NextApiRequest) {
   const form = IncomingForm();
 
-  const postData = await new Promise<PostDataInterface|null>((resolve, reject)=>{
-    form.parse(req, async (err, fields, files) => {
+  const postData = await new Promise<PostDataInterface | null>(
+    (resolve, reject) => {
+      form.parse(req, async (err, fields, files) => {
+        console.log("Fields:", fields);
+        console.log("Files:", files);
 
-      console.log(fields,files)
+        if (err) {
+          console.error("Error parsing form data:", err);
+          reject(err);
+          return;
+        }
 
-      if(err){
-        console.log(err);
-        reject(err);
-      }
-     
-      const caption = fields.caption ? fields.caption[0] : "";
-      const userId = fields.userId ? fields.userId[0] : "";
-      const username = fields.username ? fields.username[0] : "";
-      const file = files.file ? files.file[0] : null;
+        const caption = fields.caption ? fields.caption[0] : null;
+        const userId = fields.userId ? fields.userId[0] : null;
+        const username = fields.username ? fields.username[0] : null;
+        const file = files.file ? files.file[0] : null;
 
-      const postName = `${userId}_${new Date().getTime()}`;
-      const fileName = `${postName}.jpg`;
-      console.log(file && caption && userId && username)
-      if (file && caption && userId && username) {
-        const imageUrl = await UploadImage(file, fileName);
-        const postData: PostDataInterface = {
-          post_user_name: username,
-          post_name: postName,
-          post_caption: caption,
-          post_time: setDate(),
-          post_user_id: userId,
-          post_image_url: imageUrl,
-        };
-        console.log(postData);
-        resolve(postData);
-      }
-      resolve(null)
-    });
-  });
-  if(postData){
-    console.log(postData,"postdata to firebase");
-    await AddDoc(postData);
+        // Exit early if required fields are missing
+        if (!caption || !userId || !username || !file) {
+          const errorMessage =
+            "Missing required fields: caption, userId, username, or file.";
+          console.error(errorMessage);
+          reject(new Error(errorMessage));
+          return;
+        }
+
+        const postName = `${userId}_${new Date().getTime()}`;
+        const fileName = `${postName}.jpg`;
+
+        try {
+          const imageData = await UploadImage(file, fileName, userId);
+          const postData: PostDataInterface = {
+            post_user_name: username,
+            post_name: postName,
+            post_caption: caption,
+            post_time: setDate(),
+            post_user_id: userId,
+            post_image_url: imageData?.imageUrl,
+            post_blur_url: imageData?.blurUrl,
+          };
+          console.log("Post Data:", postData);
+          resolve(postData);
+        } catch (uploadError) {
+          console.error("Error uploading image:", uploadError);
+          reject(uploadError);
+        }
+      });
+    }
+  );
+
+  if (postData) {
+    console.log("Uploading post data to Firestore...");
+    try {
+      await AddDoc(postData);
+    } catch (docError) {
+      console.error("Error adding document to Firestore:", docError);
+      throw docError;
+    }
+  } else {
+    throw new Error("Failed to parse post data.");
   }
- 
 }
 
-async function UploadImage(file: formidable.File, fileName: string) {
-  const blob = fs.readFileSync(file.filepath);
+async function UploadImage(
+  file: formidable.File,
+  fileName: string,
+  userId: string
+) {
+  const blob = await sharp(file.filepath)
+    .resize({ width: 1200, fit: "cover" })
+    .jpeg({ quality: 75 })
+    .toBuffer();
+
+  const blurPlaceholder = await sharp(file.filepath)
+    .resize({ width: 10 }) // Small width for low resolution
+    .jpeg({ quality: 50 }) // Lower quality for minimal size
+    .toBuffer();
 
   try {
-    const storageRef = ref(storage, `/posts/${fileName}`);
+    const storageRef = ref(storage, `/posts/${userId}/${fileName}`);
+    const blurRef = ref(storage, `/posts/${userId}/blurred-${fileName}`);
+
     await uploadBytesResumable(storageRef, blob, {
       contentType: "image/jpeg",
     });
-    var imageUrl = await getDownloadURL(storageRef);
-    return imageUrl;
+    await uploadBytesResumable(blurRef, blurPlaceholder, {
+      contentType: "image/jpeg",
+    });
+
+    const imageUrl = await getDownloadURL(storageRef);
+    const blurUrl = await getDownloadURL(blurRef);
+
+    return { imageUrl, blurUrl };
   } catch (e) {
-    console.log(e);
-    return "";
+    console.error("Error uploading image to Firebase Storage:", e);
+    throw e;
   }
 }
 
@@ -102,9 +139,7 @@ async function AddDoc(postData: PostDataInterface) {
 }
 
 const setDate = () => {
-  var nowDate = new Date();
-  var newDate = moment(nowDate).format("DD-MM-YYYY hh:mm a");
-  return newDate;
+  return new Date().getTime();
 };
 
-export default cors(handler as any)
+export default cors(handler as any);

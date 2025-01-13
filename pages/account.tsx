@@ -6,9 +6,8 @@ import {
   ProfileResponseConfig,
   UserDataInterface,
 } from "@/components/interfaces";
-import styles from "@/styles/profile.module.css";
-import Image from "next/image";
 import SinglePost from "@/components/elements/singlePost";
+import styles from "@/styles/profile.module.css";
 
 interface Props {
   postData: PostDataInterface[] | null;
@@ -22,6 +21,7 @@ const Profile: FC<Props> = ({ postData, userData }) => {
       <div className="container">
         <div className="container_spacer"></div>
         <div className={styles.profile_container}>
+          <h1>Your Profile</h1>
           <header>
             <div className={styles.img_container}>
               <img alt="error loading image" src={userData.profile_url} />
@@ -33,9 +33,15 @@ const Profile: FC<Props> = ({ postData, userData }) => {
             </div>
           </header>
           <main>
-            <h2>User Posts</h2>
+            <h2>Your Posts</h2>
             {postData.map((item) => {
-              return <SinglePost isAuthor={true} key={item.post_name} postData={item} />;
+              return (
+                <SinglePost
+                  isAuthor={userData.uid == item.post_user_id}
+                  key={item.post_name}
+                  postData={item}
+                />
+              );
             })}
           </main>
         </div>
@@ -51,16 +57,24 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext<ParsedUrlQuery>
 ) => {
   try {
-    const { query } = context;
-    const { id } = query;
+    const uid = context.req.cookies.minimal_blog_uid;
+
+    if (!uid) {
+      return {
+        redirect: {
+          destination: "/", // Redirect to the login page if the user is not authenticated
+          permanent: false,
+        },
+      };
+    }
 
     const apiUrl =
       process.env.NODE_ENV === "production"
         ? `${process.env.DOMAIN_URL?.replace(
             /^"|"$/g,
             ""
-          )}/api/get_profile?userId=${id}`
-        : `http://localhost:3000/api/get_profile?userId=${id}`;
+          )}/api/get_profile?userId=${uid}`
+        : `http://localhost:3000/api/get_profile?userId=${uid}`;
     const response = await fetch(apiUrl);
     const res: ProfileResponseConfig = await response.json();
 

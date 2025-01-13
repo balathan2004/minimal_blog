@@ -166,18 +166,11 @@ body {
 }
 
 .loader {
-  border: 7px solid rgb(79, 75, 75);
-  border-top: 7px solid #3498db;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
   position: absolute;
   top: 30%;
   left: 45%;
   z-index: 10;
-  background-color: transparent(241, 238, 238);
+
 }
 
 @keyframes spin {

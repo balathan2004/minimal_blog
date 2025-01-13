@@ -4,7 +4,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useContext, useState, useEffect } from "react";
-import { NavbarContext } from "@/pages/_app";
+import { useNavContext } from "../context/navbar_context";
 export type NavBarType = { path: string; name: string }[];
 export const ForGuests: NavBarType = [
   { path: "/", name: "home" },
@@ -18,13 +18,14 @@ export const ForUsers: NavBarType = [
   { path: "/", name: "home" },
   { path: "/blog", name: "blog" },
   { path: "/create_post", name: "create post" },
+  { path: "/account", name: "profile" },
  
 ];
 
 export default function Navbar() {
   const currentRoute = useRouter().asPath;
 
-  const { dirs } = useContext(NavbarContext);
+  const { dirs } = useNavContext();
 
   const [inputValue, setInputValue] = useState<boolean>(false);
 

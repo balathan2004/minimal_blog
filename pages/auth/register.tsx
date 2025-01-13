@@ -1,29 +1,26 @@
-import React, { FC, useEffect, useState ,useContext} from "react";
+import React, { FC, useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
-import { AuthResponseConfig } from "@/components/interfaces";
-import { UserCredContext } from "../_app";
-import { ForUsers } from "@/components/navbar";
-import { NavbarContext } from "../_app";
+import { ResponseConfig } from "@/components/interfaces";
 import { useRouter } from "next/router";
+import { useLoadingContext } from "@/components/context/loading_context";
+import { useReplyContext } from "@/components/context/Reply_context";
 import Link from "next/link";
 
-
 const Register: FC = () => {
-  const router=useRouter()
+  const router = useRouter();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
 
-  const { setUserCred } = useContext(UserCredContext);
-  const {setDirs}=useContext(NavbarContext)
 
-
+  const { setLoading } = useLoadingContext();
+  const { setReply } = useReplyContext();
 
   const [error, setError] = useState("");
-  const [passError,setPassError] = useState(false)
+  const [passError, setPassError] = useState(false);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -37,35 +34,38 @@ const Register: FC = () => {
     const noSpacesRegex = /^\S+$/;
     if (userData.password == "") {
       setError("");
-      setPassError(false)
+      setPassError(false);
     } else if (!noSpacesRegex.test(userData.password)) {
       setError("Password cannot contain spaces.");
-      setPassError(true)
+      setPassError(true);
     }
   }, [userData.password]);
 
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userData.email.length > 5 && userData.password.length > 5 && !passError) {
-      const response = await SendData({
+    if (
+      userData.email.length > 5 &&
+      userData.password.length > 5 &&
+      !passError
+    ) {
+      setLoading(true);
+      const response = (await SendData({
         data: userData,
         route: "/api/auth/register",
-      }) as AuthResponseConfig
-      console.log("request sent")
+      })) as ResponseConfig;
+      console.log("request sent");
 
+      setReply(response.message);
+      setLoading(false);
       setError(response.message);
 
       if (response.status == 200) {
-        setUserCred(response.credentials)
-        setDirs(ForUsers)
-        // Login successful
+
         setTimeout(() => {
-          router.push("/blog")
-          console.log("Redirecting to Homepage")
-        },3000)
+          router.push("/auth/login");
+        }, 3000);
         console.log("Account Created successful");
       } else {
-        // Login failed
         console.error("Failed to Create Account");
       }
     }
@@ -73,7 +73,7 @@ const Register: FC = () => {
 
   return (
     <div className="container">
-         <div className="container_spacer"></div>
+      <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Register</h1>
@@ -81,7 +81,7 @@ const Register: FC = () => {
           <form onSubmit={handleForm}>
             <div>
               <label className={styles.placeholder}>Email</label>
-              <TextField
+              <TextField fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -95,7 +95,7 @@ const Register: FC = () => {
             </div>
             <div>
               <label className={styles.placeholder}>Password</label>
-              <TextField
+              <TextField fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"

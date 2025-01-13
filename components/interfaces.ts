@@ -45,9 +45,10 @@ profile_url:""
 export interface PostDataInterface{
   post_name:string;
   post_caption:string;
-  post_time:string;
+  post_time:number;
   post_user_id:string;
   post_image_url:string;
   post_user_name:string;
+  post_blur_url:string;
 
 }

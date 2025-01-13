@@ -3,11 +3,20 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getDocs, collection } from "firebase/firestore";
 import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
 import cors from "@/libs/cors";
- async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PostResponseConfig>
 ) {
+  if (req.method != "GET") {
+    res.json({ status: 400, message: "Bad Request", postData: [] });
+    return;
+  }
   try {
+    const page = parseInt(req.query.page as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const startIndex = page * limit;
+    const endIndex = startIndex + limit;
 
     const collectionData = collection(firestore, "posts");
 
@@ -15,13 +24,17 @@ import cors from "@/libs/cors";
       return doc.data() as PostDataInterface;
     });
 
+    
+
+    const paginatedPosts = postData.reverse().slice(startIndex, endIndex);
+
     res.json({
       status: 200,
       message: "fetch success",
-      postData: postData,
+      postData: paginatedPosts,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.json({ status: 400, message: "error fetching docs", postData: [] });
   }
 }

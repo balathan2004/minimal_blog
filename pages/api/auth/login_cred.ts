@@ -7,40 +7,39 @@ import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
 import cors from "@/libs/cors";
 
-
-
-
- async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
 ) {
   try {
-
-   
-    
     const userId = req.cookies["minimal_blog_uid"] || false;
 
-    if (userId) {
-      const userRef = doc(firestore, "users", userId);
-
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data() as UserDataInterface;
-
-        res.json({
-          message: "login success",
-          status: 200,
-          credentials: userData,
-        });
-      }
-    } else {
+    if (!userId) {
       res.json({
         message: "login failed",
         status: 300,
         credentials: DummyUserData,
       });
+      return;
     }
+
+    const userRef = doc(firestore, "users", userId);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists()) {
+      res.json({
+        message: "login failed",
+        status: 300,
+        credentials: DummyUserData,
+      });
+      return;
+    }
+    const userData = userDoc.data() as UserDataInterface;
+    res.json({
+      message: "login success",
+      status: 200,
+      credentials: userData,
+    });
   } catch (err) {
     console.log(err);
 

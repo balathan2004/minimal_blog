@@ -1,28 +1,37 @@
-import React, { FC, useState } from "react";
-import SinglePost from "@/components/elements/singlePost";
+import React, { FC, use, useEffect, useState } from "react";
 import { ParsedUrlQuery } from "querystring";
 import { GetServerSidePropsContext } from "next";
 import {
   PostDataInterface,
   SinglePostResponseConfig,
 } from "@/components/interfaces";
+import EditPost from "@/components/elements/edit_post";
 import { useUserContext } from "@/components/context/user_context";
-
+import { useRouter } from "next/router";
 interface Props {
   postData: PostDataInterface | null;
 }
 
 const Page: FC<Props> = ({ postData }) => {
   const { userCred } = useUserContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userCred && postData) {
+      if (userCred.uid != postData.post_user_id) {
+        router.push("/blog");
+      }
+    }
+  }, [userCred]);
 
   if (postData) {
     return (
       <div className="container">
         <div className="container_spacer"></div>
-        <SinglePost
+        <EditPost
           isAuthor={userCred?.uid == postData.post_user_id}
           postData={postData}
-        ></SinglePost>
+        ></EditPost>
         <div className="container_spacer"></div>
       </div>
     );

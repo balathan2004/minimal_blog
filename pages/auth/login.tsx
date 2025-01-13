@@ -1,27 +1,28 @@
-import React, { FC, useEffect, useState,useContext } from "react";
+import React, { FC, useEffect, useState, useContext } from "react";
 import { TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
-import { UserCredContext } from "../_app";
-import { ForUsers } from "@/components/navbar";
-import { NavbarContext } from "../_app";
+import { useUserContext } from "@/components/context/user_context";
+import { ForUsers } from "@/components/elements/navbar";
+import { useNavContext } from "@/components/context/navbar_context";
 import { useRouter } from "next/router";
+import { useLoadingContext } from "@/components/context/loading_context";
+import { useReplyContext } from "@/components/context/Reply_context";
 import Link from "next/link";
 const SignIn: FC = () => {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
-  const router=useRouter()
+  const router = useRouter();
 
-  const { setUserCred } = useContext(UserCredContext);
-  const {setDirs}=useContext(NavbarContext)
-
-
-
+  const { setUserCred } = useUserContext();
+  const { setDirs } = useNavContext();
+  const {setLoading}=useLoadingContext()
+  const {setReply}=useReplyContext()
   const [error, setError] = useState("");
-  const [passError,setPassError]=useState(false)
+  const [passError, setPassError] = useState(false);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -35,31 +36,37 @@ const SignIn: FC = () => {
     const noSpacesRegex = /^\S+$/;
     if (userData.password == "") {
       setError("");
-      setPassError(false)
+      setPassError(false);
     } else if (!noSpacesRegex.test(userData.password)) {
       setError("Password cannot contain spaces.");
-      setPassError(true)
+      setPassError(true);
     }
   }, [userData.password]);
 
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userData.email.length > 5 && userData.password.length > 5 && !passError) {
-      const response = await SendData({
+    if (
+      userData.email.length > 5 &&
+      userData.password.length > 5 &&
+      !passError
+    ) {
+      setLoading(true)
+      const response = (await SendData({
         data: userData,
         route: "/api/auth/login",
-      }) as AuthResponseConfig
-      console.log("request sent successfully")
+      })) as AuthResponseConfig;
+      setReply(response.message)
+      setLoading(false)
       setError(response.message);
 
       if (response.status == 200) {
-        setDirs(ForUsers)
-        setUserCred(response.credentials)
+        setDirs(ForUsers);
+        setUserCred(response.credentials);
         console.log("Login successful");
         setTimeout(() => {
-        router.push("/blog")
-          console.log("Redirecting to Homepage")
-        },2000)
+          router.push("/blog");
+          console.log("Redirecting to Homepage");
+        }, 2000);
       } else {
         // Login failed
         console.error("Login failed");
@@ -69,7 +76,7 @@ const SignIn: FC = () => {
 
   return (
     <div className="container">
-         <div className="container_spacer"></div>
+      <div className="container_spacer"></div>
       <div className={styles.auth_container}>
         <article>
           <h1 className={styles.title}>Login</h1>
@@ -77,7 +84,7 @@ const SignIn: FC = () => {
           <form onSubmit={handleForm}>
             <div>
               <label className={styles.placeholder}>Email</label>
-              <TextField
+              <TextField fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -86,12 +93,11 @@ const SignIn: FC = () => {
                 name="email"
                 type="email"
                 onChange={handleInput}
-                // Error shown if length is less than 5
               />
             </div>
             <div>
               <label className={styles.placeholder}>Password</label>
-              <TextField
+              <TextField fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -99,18 +105,16 @@ const SignIn: FC = () => {
                 variant="outlined"
                 name="password"
                 onChange={handleInput}
-                helperText={
-                  userData.password.length < 6
-                    ? "Minimum 6 characters required"
-                    : ""
-                }
               />
             </div>
             <div>
-            <Link className={styles.forget_password} href="/auth/register">
+              <Link className={styles.forget_password} href="/auth/register">
                 or create an account
               </Link>
-              <Link className={styles.forget_password} href="/auth/forget_password">
+              <Link
+                className={styles.forget_password}
+                href="/auth/forget_password"
+              >
                 forget password ?
               </Link>
               <button>Login</button>

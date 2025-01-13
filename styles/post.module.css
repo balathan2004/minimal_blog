@@ -1,9 +1,10 @@
-.single_post{
-  height: 400px;
+.single_post {
+  min-height: 400px;
   width: 500px;
+  position: relative;
 }
 
-.single_post header{
+.single_post header {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -11,45 +12,53 @@
   text-decoration: none;
 }
 
-.single_post header  > a{
+.single_post header > a {
   text-decoration: none;
   color: inherit;
   font-weight: 600;
   cursor: pointer;
-  
 }
 
-
-.single_post header img{
+.single_post header img {
   height: 50px;
   border-radius: 50%;
   border: 1px solid gray;
 }
 
-.single_post main > a{
+.single_post main > a {
   text-decoration: none;
   color: inherit;
 }
 
-.single_post main img{
+.single_post main img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: contain;
 }
 
-.single_post main  p span{
+.single_post main p span {
   margin-right: 10px;
   font-weight: 600;
 }
 
-.single_post main  p span::before{
+.single_post main p span::before {
   content: "@";
 }
 
-@media (max-width: 600px){
-
-.single_post{
-  width: 100%;
-  height: 100%;
+.single_post main form .input{
+  margin: 0.5rem 0;
 }
 
+.single_post main form .button{
+  margin: 0.5rem 0;
+}
+
+
+@media (max-width: 600px) {
+  .single_post {
+    width: 100%;
+    min-height: auto;
+    margin: 2rem 0;
+  }
 }
