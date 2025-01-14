@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false; // Prevent duplicate styles
-
 import Head from "next/head";
 import LoadingHolder from "@/components/context/loading_context";
 import ReplyHolder from "@/components/context/Reply_context";
@@ -17,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>Minimal Blog</title>
       </Head>
+
       <UserHolder>
         <NavHolder>
           <ReplyHolder>

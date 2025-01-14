@@ -94,7 +94,7 @@ const EditPost: FC<Props> = ({ postData }) => {
           alt={data.post_name}
           src={data.post_image_url}
           placeholder="blur"
-          blurDataURL={"/public/logo.png"}
+          blurDataURL={"/blur.png"}
         />
         <span suppressHydrationWarning>
           created{" "}

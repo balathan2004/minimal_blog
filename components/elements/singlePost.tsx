@@ -31,7 +31,7 @@ const SinglePost: FC<Props> = ({ postData, isAuthor }) => {
             alt={postData.post_name}
             src={postData.post_image_url}
             placeholder="blur"
-            blurDataURL={"/public/logo.png"}
+            blurDataURL={"/blur.png"}
           />
           <p>
             <span>{postData.post_user_name}</span>
