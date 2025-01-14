@@ -9,6 +9,10 @@
   position: relative;
 }
 
+.blog_container h1{
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   .blog_container {
     width: 95%;

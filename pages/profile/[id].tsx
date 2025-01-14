@@ -22,6 +22,7 @@ const Profile: FC<Props> = ({ postData, userData }) => {
       <div className="container">
         <div className="container_spacer"></div>
         <div className={styles.profile_container}>
+        <h1>User Profile</h1>
           <header>
             <div className={styles.img_container}>
               <img alt="error loading image" src={userData.profile_url} />

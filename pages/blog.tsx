@@ -54,17 +54,14 @@ const Home: FC<Props> = ({ initialPostData }) => {
     <div className="container">
       <div className="container_spacer"></div>
       <div className={styles.blog_container}>
+        <h1>Blog</h1>
         <InfiniteScroll
           pageStart={0}
           loadMore={fetchMorePosts}
           hasMore={true || false}
         >
           {renderPostData?.map((item) => (
-            <SinglePost
-              isAuthor={false}
-              key={item.post_name}
-              postData={item}
-            />
+            <SinglePost isAuthor={false} key={item.post_name} postData={item} />
           ))}
         </InfiniteScroll>
       </div>
