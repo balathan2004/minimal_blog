@@ -1,5 +1,9 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false; // Prevent duplicate styles
+
 import Head from "next/head";
 import LoadingHolder from "@/components/context/loading_context";
 import ReplyHolder from "@/components/context/Reply_context";

@@ -1,11 +1,14 @@
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavContext } from "../context/navbar_context";
+
+
 export type NavBarType = { path: string; name: string }[];
+
+
 export const ForGuests: NavBarType = [
   { path: "/", name: "home" },
   { path: "/blog", name: "blog" },
@@ -47,7 +50,7 @@ export default function Navbar() {
           onChange={setInput}
           checked={inputValue}
         ></input>
-        <label htmlFor="check" className={"checkbtn"}>
+        <label htmlFor="check" className="checkbtn">
           <FontAwesomeIcon icon={faBars} />
         </label>
         <Link href="/" className={"brand"}>
