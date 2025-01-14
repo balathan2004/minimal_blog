@@ -51,7 +51,7 @@ export default function Navbar() {
           <FontAwesomeIcon icon={faBars} />
         </label>
         <Link href="/" className={"brand"}>
-          Minimal Blogger
+          MB
         </Link>
         <ul className={"uls"}>
           {dirs.map((x) => {

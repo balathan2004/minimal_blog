@@ -14,17 +14,13 @@ async function handler(
   try {
     const page = parseInt(req.query.page as string) || 0;
     const limit = parseInt(req.query.limit as string) || 10;
-
     const startIndex = page * limit;
     const endIndex = startIndex + limit;
-
     const collectionData = collection(firestore, "posts");
 
     const postData = (await getDocs(collectionData)).docs.map((doc) => {
       return doc.data() as PostDataInterface;
     });
-
-    
 
     const paginatedPosts = postData.reverse().slice(startIndex, endIndex);
 
