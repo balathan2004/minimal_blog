@@ -58,7 +58,7 @@ const ForgetPage: FC = () => {
                 required
                 className={styles.input}
                 id="outlined-basic"
-                label="Enter Email Address"
+                placeholder="Enter Email Address"
                 variant="outlined"
                 name="email"
                 type="email"

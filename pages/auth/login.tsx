@@ -88,7 +88,7 @@ const SignIn: FC = () => {
                 required
                 className={styles.input}
                 id="outlined-basic"
-                label="Enter Email Address"
+                placeholder="Enter Email Address"
                 variant="outlined"
                 name="email"
                 type="email"
@@ -101,7 +101,7 @@ const SignIn: FC = () => {
                 required
                 className={styles.input}
                 id="outlined-basic"
-                label="Password"
+                placeholder="Password"
                 variant="outlined"
                 name="password"
                 onChange={handleInput}
