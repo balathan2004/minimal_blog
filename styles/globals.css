@@ -25,7 +25,7 @@ body {
   display: flex;
 }
 
-.container_spacer{
+.container_spacer {
   flex: 1;
 }
 
@@ -38,7 +38,7 @@ body {
 }
 
 .nav .checkbtn {
-display: none;
+  display: none;
 }
 
 .nav ul {
@@ -52,12 +52,7 @@ display: none;
   padding: 0 50px;
   font-weight: 700;
   text-decoration: none;
-}
-
-.brand:hover {
   cursor: pointer;
-  transition: all 0.5s;
-  color: rgb(52, 45, 45);
 }
 
 .nav ul {
@@ -105,10 +100,6 @@ display: none;
 }
 
 @media (max-width: 958px) {
-  .nav .brand {
-    font-size: 30px;
-    padding-left: 50px;
-  }
   .nav ul li a {
     font: 16px;
   }
@@ -145,12 +136,6 @@ display: none;
     font-size: 20px;
   }
 
-  .nav a:hover,
-  .nav a:active {
-    background: none;
-    color: #0082e6;
-  }
-
   .input:checked ~ .uls {
     display: block;
     z-index: 10;
@@ -169,7 +154,6 @@ display: none;
   top: 30%;
   left: 45%;
   z-index: 10;
-
 }
 
 @keyframes spin {
@@ -186,15 +170,12 @@ display: none;
   font-size: 22px;
 }
 
-@media (max-width: 600px){
-
-  .container_spacer{
+@media (max-width: 600px) {
+  .container_spacer {
     display: none;
   }
 
-  .container{
+  .container {
     width: 100%;
   }
-
-
 }
