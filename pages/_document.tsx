@@ -14,6 +14,8 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
+        <link rel="preload" href="/blur.png" as="image"/>
+
       </Head>
       <body>
         <Main />

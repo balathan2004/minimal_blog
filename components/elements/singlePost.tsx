@@ -15,23 +15,32 @@ const SinglePost: FC<Props> = ({ postData, isAuthor }) => {
     <article className={styles.single_post}>
       <header>
         <img
+          alt={`${postData.post_user_name}'s avatar`}
           src={`https://ui-avatars.com/api/?name=${postData.post_user_name}`}
         />
-        <Link href={isAuthor?"/account":`/profile/${postData.post_user_id}`}>
+        <Link
+          href={isAuthor ? "/account" : `/profile/${postData.post_user_id}`}
+        >
           <span>{postData.post_user_name}</span>
         </Link>
       </header>
 
       <main>
-        <Link href={isAuthor?`/your_posts/${postData.post_name}`:`/posts/${postData.post_name}`}>
+        <Link
+          href={
+            isAuthor
+              ? `/your_posts/${postData.post_name}`
+              : `/posts/${postData.post_name}`
+          }
+        >
           <Image
             width={600}
             height={400}
-            priority
+            priority={false}
             alt={postData.post_name}
-            src={postData.post_image_url}
+            src={postData.post_image_url||"/blur.png"}
             placeholder="blur"
-            blurDataURL={"/blur.png"}
+            blurDataURL="/blur.png"
           />
           <p>
             <span>{postData.post_user_name}</span>
@@ -41,7 +50,7 @@ const SinglePost: FC<Props> = ({ postData, isAuthor }) => {
             created{" "}
             {formatDistanceToNow(new Date(postData.post_time), {
               addSuffix: true,
-            }) }
+            })}
           </span>
         </Link>
       </main>
