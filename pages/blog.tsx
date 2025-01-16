@@ -1,11 +1,13 @@
 import React, { FC, useState } from "react";
 import { GetServerSideProps } from "next";
+import { debounce } from "lodash";
 import styles from "@/styles/blog.module.css";
 import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
 import SinglePost from "@/components/elements/singlePost";
-import { useLoadingContext } from "@/components/context/loading_context";
 import InfiniteScroll from "react-infinite-scroller";
 import { useUserContext } from "@/components/context/user_context";
+import { CircularProgress } from "@mui/material";
+
 interface Props {
   initialPostData: PostDataInterface[] | null;
 }
@@ -16,20 +18,17 @@ const Home: FC<Props> = ({ initialPostData }) => {
   >(initialPostData || []);
   const [startFrom, setStartFrom] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
-  const { loading, setLoading } = useLoadingContext();
+  const [loading, setLoading] = useState(false);
 
   const { userCred } = useUserContext();
 
   const fetchMorePosts = async () => {
-    if (loading || !hasMorePosts) return; // Avoid multiple requests
-    setLoading(true);
-
     try {
       const response = await fetch(`/api/get_posts?page=${startFrom}&limit=5`);
-
       if (response.ok) {
         const data: PostResponseConfig = await response.json();
         console.log(data);
+
         if (data.postData && data.postData.length > 0) {
           setRenderPostData((prevData) => [
             ...(prevData || []),
@@ -45,9 +44,18 @@ const Home: FC<Props> = ({ initialPostData }) => {
       }
     } catch (error) {
       console.error("Error fetching more posts:", error);
-    } finally {
-      setLoading(false);
     }
+  };
+
+  const debouncedFetchMorePosts = debounce(async () => {
+    await fetchMorePosts();
+    setLoading(false); // Stop loading after fetchMorePosts finishes
+  }, 1000); // 1 second debounce delay
+
+  const triggerFetchMorePosts = () => {
+    if (loading || !hasMorePosts) return; // Prevent multiple requests
+    setLoading(true); // Set loading as soon as debounce starts
+    debouncedFetchMorePosts();
   };
 
   return (
@@ -57,13 +65,19 @@ const Home: FC<Props> = ({ initialPostData }) => {
         <h1>Blog</h1>
         <InfiniteScroll
           pageStart={0}
-          loadMore={fetchMorePosts}
+          loadMore={triggerFetchMorePosts}
           hasMore={true || false}
+          loader={loading && hasMorePosts ? <Loading /> : undefined}
         >
           {renderPostData?.map((item) => (
             <SinglePost isAuthor={false} key={item.post_name} postData={item} />
           ))}
         </InfiniteScroll>
+        {!hasMorePosts?(
+          <div className="wrapper">
+          <span className="text">End Of Page</span>
+        </div>
+        ):""}
       </div>
 
       <div className="container_spacer"></div>
@@ -72,6 +86,15 @@ const Home: FC<Props> = ({ initialPostData }) => {
 };
 
 export default Home;
+
+function Loading() {
+  return (
+    <div className="wrapper">
+      <div className="dot"></div>
+      <span className="text">Fetching Posts</span>
+    </div>
+  );
+}
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const apiUrl =
