@@ -23,6 +23,7 @@ async function handler(
 
   try {
     console.log("Processing request...");
+    res.status(200).json({ message: "Post went for processing", status: 200 });
     await post(req);
     res.status(200).json({ message: "Success", status: 200 });
   } catch (err: any) {

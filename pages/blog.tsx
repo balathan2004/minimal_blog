@@ -6,7 +6,6 @@ import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
 import SinglePost from "@/components/elements/singlePost";
 import InfiniteScroll from "react-infinite-scroller";
 import { useUserContext } from "@/components/context/user_context";
-import { CircularProgress } from "@mui/material";
 
 interface Props {
   initialPostData: PostDataInterface[] | null;
