@@ -19,13 +19,9 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseConfig>
 ) {
-  console.log("Origin is: ", req.headers.origin);
-
   try {
-    console.log("Processing request...");
-    res.status(200).json({ message: "Post went for processing", status: 200 });
+    res.status(200).json({ message: "Post sent for processing", status: 200 });
     await post(req);
-    res.status(200).json({ message: "Success", status: 200 });
   } catch (err: any) {
     console.error("Error processing request:", err.message);
     res.status(400).json({ message: err.message, status: 400 });

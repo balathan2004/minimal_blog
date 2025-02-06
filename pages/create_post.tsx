@@ -21,7 +21,7 @@ const SignIn: FC = () => {
 
     if (caption.length > 0 && image && userCred) {
       console.log("submitted");
-      setLoading(true)
+      setLoading(true);
       const form = new FormData();
       form.append("file", image);
       form.append("caption", caption);
@@ -31,10 +31,13 @@ const SignIn: FC = () => {
         data: form,
         route: "/api/create",
       });
-      console.log(response);
-      setLoading(false)
-      if (response.status == 200) {
-        router.push("/blog");
+
+      setLoading(false);
+      if (response) {
+        setReply(response.message);
+        if (response.status == 200) {
+          router.push("/blog");
+        }
       }
     } else {
       console.error("All fields are required");
@@ -105,7 +108,11 @@ const SignIn: FC = () => {
                 value={caption}
                 placeholder="Enter caption"
               />
-              <input onChange={handleImage} accept="image/*" type="file"></input>
+              <input
+                onChange={handleImage}
+                accept="image/*"
+                type="file"
+              ></input>
               <img src={showImage}></img>
               <Button fullWidth variant="contained" type="submit">
                 Post
