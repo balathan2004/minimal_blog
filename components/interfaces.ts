@@ -49,6 +49,6 @@ export interface PostDataInterface{
   post_user_id:string;
   post_image_url:string;
   post_user_name:string;
-  post_blur_url:string;
+  post_blur_url?:string;
 
 }
