@@ -10,6 +10,8 @@ import cors from "@/libs/cors";
 import sharp from "sharp";
 import { PassThrough } from "stream";
 
+// file no longer used anymore
+
 export const config = {
   api: {
     bodyParser: false,

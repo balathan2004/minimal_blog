@@ -29,10 +29,17 @@ const Home: FC<Props> = ({ initialPostData }) => {
         console.log(data);
 
         if (data.postData && data.postData.length > 0) {
-          setRenderPostData((prevData) => [
-            ...(prevData || []),
-            ...(data.postData || []),
-          ]);
+          setRenderPostData((prevData) => {
+            // Filter out duplicates based on post_name (or another unique identifier)
+            const existingPostNames = new Set(
+              prevData?.map((post) => post.post_name)
+            );
+            const newPosts = data.postData?.filter(
+              (post) => !existingPostNames.has(post.post_name)
+            );
+
+            return [...(prevData || []), ...(newPosts || [])];
+          });
           setStartFrom((prev) => prev + 1);
         } else {
           setHasMorePosts(false); // No more posts to load
@@ -72,11 +79,13 @@ const Home: FC<Props> = ({ initialPostData }) => {
             <SinglePost isAuthor={false} key={item.post_name} postData={item} />
           ))}
         </InfiniteScroll>
-        {!hasMorePosts?(
+        {!hasMorePosts ? (
           <div className="wrapper">
-          <span className="text">End Of Page</span>
-        </div>
-        ):""}
+            <span className="text">End Of Page</span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="container_spacer"></div>

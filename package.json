@@ -16,6 +16,8 @@
     "@google-cloud/tasks": "^5.5.2",
     "@mui/icons-material": "^6.1.4",
     "@mui/material": "^6.3.1",
+    "bull": "^4.16.5",
+    "bullmq": "^5.40.0",
     "cookies-next": "^4.3.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
