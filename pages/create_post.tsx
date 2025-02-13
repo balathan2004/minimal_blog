@@ -29,7 +29,8 @@ const SignIn: FC = () => {
       form.append("username", userCred.display_name);
       const response = await SendFile({
         data: form,
-        route: "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
+        route:
+          "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
       });
 
       setLoading(false);
