@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from "react";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
@@ -19,8 +19,8 @@ const SignIn: FC = () => {
 
   const { setUserCred } = useUserContext();
   const { setDirs } = useNavContext();
-  const {setLoading}=useLoadingContext()
-  const {setReply}=useReplyContext()
+  const { loading, setLoading } = useLoadingContext();
+  const { setReply } = useReplyContext();
   const [error, setError] = useState("");
   const [passError, setPassError] = useState(false);
 
@@ -50,13 +50,13 @@ const SignIn: FC = () => {
       userData.password.length > 5 &&
       !passError
     ) {
-      setLoading(true)
+      setLoading(true);
       const response = (await SendData({
         data: userData,
         route: "/api/auth/login",
       })) as AuthResponseConfig;
-      setReply(response.message)
-      setLoading(false)
+      setReply(response.message);
+      setLoading(false);
       setError(response.message);
 
       if (response.status == 200) {
@@ -84,7 +84,8 @@ const SignIn: FC = () => {
           <form onSubmit={handleForm}>
             <div>
               <label className={styles.placeholder}>Email</label>
-              <TextField fullWidth
+              <TextField
+                fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -97,7 +98,8 @@ const SignIn: FC = () => {
             </div>
             <div>
               <label className={styles.placeholder}>Password</label>
-              <TextField fullWidth
+              <TextField
+                fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -117,7 +119,15 @@ const SignIn: FC = () => {
               >
                 forget password ?
               </Link>
-              <button>Login</button>
+
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Logging in" : "Login"}
+              </Button>
             </div>
           </form>
         </article>

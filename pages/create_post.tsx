@@ -13,7 +13,7 @@ const SignIn: FC = () => {
   const [caption, setCaption] = useState("");
   const { userCred } = useUserContext();
   const router = useRouter();
-  const { setLoading } = useLoadingContext();
+  const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
 
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -115,8 +115,13 @@ const SignIn: FC = () => {
                 type="file"
               ></input>
               <img src={showImage}></img>
-              <Button fullWidth variant="contained" type="submit">
-                Post
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Posting" : "Post"}
               </Button>
             </form>
           </article>

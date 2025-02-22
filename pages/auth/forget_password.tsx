@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { ResponseConfig } from "@/components/interfaces";
@@ -11,7 +11,7 @@ const ForgetPage: FC = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
   const { setReply } = useReplyContext();
-  const { setLoading } = useLoadingContext();
+  const { loading, setLoading } = useLoadingContext();
 
   const [error, setError] = useState("");
 
@@ -23,7 +23,7 @@ const ForgetPage: FC = () => {
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     const response = (await SendData({
       data: { email },
@@ -32,7 +32,7 @@ const ForgetPage: FC = () => {
 
     setError(response.message);
     setReply(response.message);
-    setLoading(false)
+    setLoading(false);
     if (response.status == 200) {
       setTimeout(() => {
         router.push("/auth/login");
@@ -70,7 +70,15 @@ const ForgetPage: FC = () => {
               <Link className={styles.forget_password} href="/auth/login">
                 Login Here !
               </Link>
-              <button>Create Reset Email</button>
+
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Submitting" : "Create Reset Email"}
+              </Button>
             </div>
           </form>
         </article>

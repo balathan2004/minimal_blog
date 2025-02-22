@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { ResponseConfig } from "@/components/interfaces";
@@ -15,8 +15,7 @@ const Register: FC = () => {
     password: "",
   });
 
-
-  const { setLoading } = useLoadingContext();
+  const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
 
   const [error, setError] = useState("");
@@ -60,7 +59,6 @@ const Register: FC = () => {
       setError(response.message);
 
       if (response.status == 200) {
-
         setTimeout(() => {
           router.push("/auth/login");
         }, 3000);
@@ -81,7 +79,8 @@ const Register: FC = () => {
           <form onSubmit={handleForm}>
             <div>
               <label className={styles.placeholder}>Email</label>
-              <TextField fullWidth
+              <TextField
+                fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -95,7 +94,8 @@ const Register: FC = () => {
             </div>
             <div>
               <label className={styles.placeholder}>Password</label>
-              <TextField fullWidth
+              <TextField
+                fullWidth
                 required
                 className={styles.input}
                 id="outlined-basic"
@@ -114,7 +114,15 @@ const Register: FC = () => {
               <Link className={styles.forget_password} href="/auth/login">
                 Have An Account Login here !
               </Link>
-              <button>Register</button>
+             
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                disabled={loading}
+              >
+                     {loading ? "Registering" : "Register"}
+              </Button>
             </div>
           </form>
         </article>

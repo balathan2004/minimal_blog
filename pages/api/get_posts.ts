@@ -24,10 +24,13 @@ async function handler(
 
     const paginatedPosts = postData.reverse().slice(startIndex, endIndex);
 
+    const sortedPosts = [...paginatedPosts].sort((a, b) => 
+      new Date(b.post_time).getTime() - new Date(a.post_time).getTime()
+    );
     res.json({
       status: 200,
       message: "fetch success",
-      postData: paginatedPosts,
+      postData: sortedPosts,
     });
   } catch (err) {
     console.log(err);
