@@ -8,7 +8,9 @@ export default async function (
   res: NextApiResponse<ResponseConfig>
 ) {
   try {
-    const userId = req.cookies["minimal_blog_uid"] || false;
+  
+    const userId =
+      req.cookies["minimal_blog_uid"] || req.body.post_user_id || false;
 
     const {
       post_name,
