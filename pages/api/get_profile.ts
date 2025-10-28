@@ -13,7 +13,7 @@ import {
   ProfileResponseConfig,
   UserDataInterface,
 } from "@/components/interfaces";
-import cors from "@/libs/cors";
+import withMiddleware from "@/libs/cors";
 
 async function handler (
   req: NextApiRequest,
@@ -72,4 +72,4 @@ async function handler (
 }
 
 
-export default cors(handler as any)
+export default withMiddleware(handler as any)

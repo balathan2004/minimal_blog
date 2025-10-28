@@ -5,7 +5,7 @@ import { firestore } from "@/components/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
-import cors from "@/libs/cors";
+import withMiddleware from "@/libs/cors";
 
 async function handler(
   req: NextApiRequest,
@@ -51,4 +51,4 @@ async function handler(
   }
 }
 
-export default cors(handler as any);
+export default withMiddleware(handler as any);

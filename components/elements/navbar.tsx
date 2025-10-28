@@ -3,32 +3,12 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useContext, useState, useEffect } from "react";
-import { useNavContext } from "../context/navbar_context";
-
-
-export type NavBarType = { path: string; name: string }[];
-
-
-export const ForGuests: NavBarType = [
-  { path: "/", name: "home" },
-  { path: "/blog", name: "blog" },
-  { path: "/auth/login", name: "login" },
-  { path: "/auth/register", name: "register" },
-
-];
-
-export const ForUsers: NavBarType = [
-  { path: "/", name: "home" },
-  { path: "/blog", name: "blog" },
-  { path: "/create_post", name: "create post" },
-  { path: "/account", name: "profile" },
- 
-];
+import { NavGuests, useAuth } from "../redux/api/authSlice";
 
 export default function Navbar() {
   const currentRoute = useRouter().asPath;
 
-  const { dirs } = useNavContext();
+  const { navState } = useAuth();
 
   const [inputValue, setInputValue] = useState<boolean>(false);
 
@@ -57,7 +37,7 @@ export default function Navbar() {
           MB
         </Link>
         <ul className={"uls"}>
-          {dirs.map((x) => {
+          {navState.map((x) => {
             if (x.path != currentRoute) {
               return (
                 <li key={x.path} id={x.path}>

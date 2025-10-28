@@ -5,10 +5,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "@/components/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
-import { setCookie } from "cookies-next";
 import { UserDataInterface } from "@/components/interfaces";
-import { DummyUserData } from "@/components/interfaces";
 import cors from "@/libs/cors";
+import { createBothToken } from "@/libs/jwt";
 
 async function handler(
   req: NextApiRequest,
@@ -16,14 +15,12 @@ async function handler(
 ) {
   try {
     const { email, password } = req.body;
-    console.log(email);
-    const isSecure = process.env.NODE_ENV === "production";
+    console.log("Login Request from ", { email });
 
     if (!email || !password) {
       res.json({
         message: "fields missing",
-        status: 300,
-        credentials: DummyUserData,
+        credentials: null,
       });
       return;
     }
@@ -35,8 +32,7 @@ async function handler(
     if (!fetchedUser.emailVerified) {
       res.json({
         message: "Youre Not Verified",
-        status: 300,
-        credentials: DummyUserData,
+        credentials: null,
       });
       return;
     }
@@ -48,41 +44,33 @@ async function handler(
     if (!userDoc.exists()) {
       res.json({
         message: "User Not Found",
-        status: 300,
-        credentials: DummyUserData,
+        credentials: null,
       });
       return;
     }
 
     const userData = userDoc.data() as UserDataInterface;
-    setCookie("minimal_blog_uid", userData.uid, {
-      req,
-      res,
-      maxAge: 900000,
-      httpOnly: true,
-      sameSite: "none",
-      secure: isSecure,
-    });
+
+    const tokens=createBothToken(userData)
+
     res.json({
       message: "login success",
-      status: 200,
-      credentials: userData,
+      credentials: {...userData},
+      ...tokens
     });
   } catch (err) {
     if (err instanceof FirebaseError) {
       console.log(err.message);
       res.json({
         message: err.message,
-        status: 300,
-        credentials: DummyUserData,
+        credentials: null,
       });
     } else {
       console.log(err);
 
       res.json({
         message: "login failed",
-        status: 300,
-        credentials: DummyUserData,
+        credentials: null,
       });
     }
   }

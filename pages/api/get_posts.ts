@@ -2,7 +2,7 @@ import { firestore } from "@/components/firebase/config";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getDocs, collection } from "firebase/firestore";
 import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
-import cors from "@/libs/cors";
+import withMiddleware from "@/libs/cors";
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PostResponseConfig>
@@ -38,4 +38,4 @@ async function handler(
   }
 }
 
-export default cors(handler as any);
+export default withMiddleware(handler as any);

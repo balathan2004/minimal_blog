@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import { useUserContext } from "@/components/context/user_context";
 import SendFile from "@/components/sendFile";
 import styles from "@/styles/create_post.module.css";
 import { useRouter } from "next/router";
@@ -11,7 +10,7 @@ const SignIn: FC = () => {
   const [image, setImage] = useState<null | Blob>(null);
   const [showImage, setShowImage] = useState("");
   const [caption, setCaption] = useState("");
-  const { userCred } = useUserContext();
+
   const router = useRouter();
   const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
@@ -19,18 +18,18 @@ const SignIn: FC = () => {
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (caption.length > 0 && image && userCred) {
+    if (caption.length > 0 && image ) {
       console.log("submitted");
       setLoading(true);
       const form = new FormData();
       form.append("file", image);
       form.append("caption", caption);
-      form.append("userId", userCred.uid);
-      form.append("username", userCred.display_name);
+      // form.append("userId", userCred.uid);
+      // form.append("username", userCred.display_name);
       const response = await SendFile({
         data: form,
-        route:
-          "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
+        route:"/api/create_post"
+          // "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
       });
 
       setLoading(false);

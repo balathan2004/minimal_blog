@@ -21,7 +21,6 @@ async function handler(
     if (!email) {
       res.json({
         message: "Email not found",
-        status: 300,
       });
       return;
     }
@@ -29,21 +28,18 @@ async function handler(
     await sendPasswordResetEmail(auth, email);
     res.json({
       message: "Password reset email sent successfully",
-      status: 200,
     });
   } catch (err) {
     if (err instanceof FirebaseError) {
       console.log(err.message);
       res.json({
         message: err.message,
-        status: 300,
       });
     } else {
       console.log(err);
 
       res.json({
         message: "login failed",
-        status: 300,
       });
     }
   }

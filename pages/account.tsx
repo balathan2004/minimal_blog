@@ -14,7 +14,7 @@ interface Props {
   userData: UserDataInterface | null;
 }
 
-const Profile: FC<Props> = ({ postData, userData }) => {
+const Profile: FC<Props> = ({ postData = [], userData = {} }) => {
   console.log(postData, userData);
   if (postData && userData) {
     return (
@@ -53,41 +53,41 @@ const Profile: FC<Props> = ({ postData, userData }) => {
 
 export default Profile;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext<ParsedUrlQuery>
-) => {
-  try {
-    const uid = context.req.cookies.minimal_blog_uid;
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext<ParsedUrlQuery>
+// ) => {
+//   try {
+//     const uid = context.req.cookies.minimal_blog_uid;
 
-    if (!uid) {
-      return {
-        redirect: {
-          destination: "/", // Redirect to the login page if the user is not authenticated
-          permanent: false,
-        },
-      };
-    }
+//     if (!uid) {
+//       return {
+//         redirect: {
+//           destination: "/", // Redirect to the login page if the user is not authenticated
+//           permanent: false,
+//         },
+//       };
+//     }
 
-    const apiUrl =
-      process.env.NODE_ENV === "production"
-        ? `${process.env.DOMAIN_URL?.replace(
-            /^"|"$/g,
-            ""
-          )}/api/get_profile?userId=${uid}`
-        : `http://localhost:3000/api/get_profile?userId=${uid}`;
-    const response = await fetch(apiUrl);
-    const res: ProfileResponseConfig = await response.json();
+//     const apiUrl =
+//       process.env.NODE_ENV === "production"
+//         ? `${process.env.DOMAIN_URL?.replace(
+//             /^"|"$/g,
+//             ""
+//           )}/api/get_profile?userId=${uid}`
+//         : `http://localhost:3000/api/get_profile?userId=${uid}`;
+//     const response = await fetch(apiUrl);
+//     const res: ProfileResponseConfig = await response.json();
 
-    console.log(res);
+//     console.log(res);
 
-    if (res.status === 200) {
-      return {
-        props: { postData: res.postData, userData: res.userData },
-      };
-    } else {
-      return { props: { postData: null } };
-    }
-  } catch (e) {
-    return { props: { postData: null } };
-  }
-};
+//     if (res.status === 200) {
+//       return {
+//         props: { postData: res.postData, userData: res.userData },
+//       };
+//     } else {
+//       return { props: { postData: null } };
+//     }
+//   } catch (e) {
+//     return { props: { postData: null } };
+//   }
+// };

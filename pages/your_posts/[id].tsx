@@ -6,14 +6,13 @@ import {
   SinglePostResponseConfig,
 } from "@/components/interfaces";
 import EditPost from "@/components/elements/edit_post";
-import { useUserContext } from "@/components/context/user_context";
 import { useRouter } from "next/router";
 interface Props {
   postData: PostDataInterface | null;
 }
 
 const Page: FC<Props> = ({ postData }) => {
-  const { userCred } = useUserContext();
+
   const router = useRouter();
 
   useEffect(() => {

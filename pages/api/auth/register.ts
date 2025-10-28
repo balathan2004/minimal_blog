@@ -9,7 +9,6 @@ import { generateFromEmail } from "unique-username-generator";
 import { auth, firestore } from "@/components/firebase/config";
 import { doc, setDoc } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
-import { setCookie } from "cookies-next";
 import { UserDataInterface } from "@/components/interfaces";
 import cors from "@/libs/cors";
 
@@ -23,7 +22,6 @@ async function handler(
     if (!email || !password) {
       res.json({
         message: "field values missing",
-        status: 300,
       });
       return;
     }
@@ -52,21 +50,18 @@ async function handler(
 
     res.json({
       message: "Verification Mail sent to inbox",
-      status: 200,
     });
   } catch (err) {
     if (err instanceof FirebaseError) {
       console.log(err.message);
       res.json({
         message: err.message,
-        status: 300,
       });
     } else {
       console.log(err);
 
       res.json({
         message: "login failed",
-        status: 300,
       });
     }
   }

@@ -3,13 +3,11 @@ import { Button, TextField } from "@mui/material";
 import styles from "@/styles/auth.module.css";
 import SendData from "@/components/send_data";
 import { AuthResponseConfig } from "@/components/interfaces";
-import { useUserContext } from "@/components/context/user_context";
-import { ForUsers } from "@/components/elements/navbar";
-import { useNavContext } from "@/components/context/navbar_context";
 import { useRouter } from "next/router";
 import { useLoadingContext } from "@/components/context/loading_context";
 import { useReplyContext } from "@/components/context/Reply_context";
 import Link from "next/link";
+import { useLoginMutation } from "@/components/redux/api/authApi";
 const SignIn: FC = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -17,12 +15,12 @@ const SignIn: FC = () => {
   });
   const router = useRouter();
 
-  const { setUserCred } = useUserContext();
-  const { setDirs } = useNavContext();
   const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
   const [error, setError] = useState("");
   const [passError, setPassError] = useState(false);
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -51,20 +49,16 @@ const SignIn: FC = () => {
       !passError
     ) {
       setLoading(true);
-      const response = (await SendData({
-        data: userData,
-        route: "/api/auth/login",
-      })) as AuthResponseConfig;
+      const response = await login({ ...userData }).unwrap();
       setReply(response.message);
       setLoading(false);
       setError(response.message);
 
-      if (response.status == 200) {
-        setDirs(ForUsers);
-        setUserCred(response.credentials);
+      if (response) {
+        console.log({response});
         console.log("Login successful");
         setTimeout(() => {
-          router.push("/blog");
+          // router.push("/blog");
           console.log("Redirecting to Homepage");
         }, 2000);
       } else {

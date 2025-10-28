@@ -5,7 +5,7 @@ import styles from "@/styles/blog.module.css";
 import { PostDataInterface, PostResponseConfig } from "@/components/interfaces";
 import SinglePost from "@/components/elements/singlePost";
 import InfiniteScroll from "react-infinite-scroller";
-import { useUserContext } from "@/components/context/user_context";
+
 
 interface Props {
   initialPostData: PostDataInterface[] | null;
@@ -18,8 +18,6 @@ const Home: FC<Props> = ({ initialPostData }) => {
   const [startFrom, setStartFrom] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const { userCred } = useUserContext();
 
   const fetchMorePosts = async () => {
     try {

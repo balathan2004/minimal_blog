@@ -5,7 +5,6 @@ import styles from "@/styles/post.module.css";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { Button, TextField } from "@mui/material";
-import { useUserContext } from "../context/user_context";
 import SendData from "../send_data";
 import { useReplyContext } from "../context/Reply_context";
 import { useRouter } from "next/router";
@@ -19,7 +18,6 @@ interface Props {
 const EditPost: FC<Props> = ({ postData }) => {
   const [data, setData] = useState(postData);
   const [caption, setCaption] = useState(data.post_caption);
-  const { userCred } = useUserContext();
   const { setReply } = useReplyContext();
   const router = useRouter();
 
