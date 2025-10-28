@@ -51,12 +51,12 @@ async function handler(
 
     const userData = userDoc.data() as UserDataInterface;
 
-    const tokens=createBothToken(userData)
+    const tokens = createBothToken(userData);
 
     res.json({
       message: "login success",
-      credentials: {...userData},
-      ...tokens
+      credentials: { ...userData },
+      ...tokens,
     });
   } catch (err) {
     if (err instanceof FirebaseError) {

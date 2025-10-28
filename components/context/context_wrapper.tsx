@@ -1,25 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/elements/navbar";
 import ReplyPopup from "../elements/ReplyPopup";
 import LoadingComponent from "../elements/loading";
+import { useGetAccessTokenMutation } from "../redux/api/authApi";
+
 
 export default function ContextWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // async function GetCred() {
-  //   const response = (await GetRequest(
-  //     "/api/auth/login_cred"
-  //   )) as AuthResponseConfig;
-  //   if (response == 200) {
-  //     setUserCred(response.credentials);
-
-  //   }
-  // }
+  const [getAccessToken] = useGetAccessTokenMutation();
 
   useEffect(() => {
-    // GetCred();
+    const token = localStorage.getItem("minimalBlogRefreshToken");
+    if (!token) return;
+    getAccessToken(token).unwrap().then(console.log).catch(console.log);
   }, []);
 
   return (

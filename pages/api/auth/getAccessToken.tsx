@@ -6,30 +6,34 @@ import { doc, getDoc } from "firebase/firestore";
 import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
 import withMiddleware from "@/libs/cors";
+import { verifyRefreshToken } from "@/libs/jwt";
+import jwt from "jsonwebtoken";
+
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET as string;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
 ) {
   try {
-    const userId = req.cookies["minimal_blog_uid"] || false;
+    const refreshToken = (req.body.refreshToken as string) || "";
 
-    if (!userId) {
-      res.json({
-        message: "login failed",
-        status: 300,
-        credentials: DummyUserData,
-      });
-      return;
-    }
+    console.log({ refreshToken });
 
-    const userRef = doc(firestore, "users", userId);
+    const cred = verifyRefreshToken(refreshToken);
+
+    console.log({ cred });
+
+    if (!cred) return;
+
+    const userRef = doc(firestore, "users", cred.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
       res.json({
         message: "login failed",
-        status: 300,
+
         credentials: DummyUserData,
       });
       return;
@@ -37,7 +41,7 @@ async function handler(
     const userData = userDoc.data() as UserDataInterface;
     res.json({
       message: "login success",
-      status: 200,
+
       credentials: userData,
     });
   } catch (err) {
@@ -45,8 +49,8 @@ async function handler(
 
     res.json({
       message: "login failed",
-      status: 300,
-      credentials: DummyUserData,
+
+      credentials: null,
     });
   }
 }

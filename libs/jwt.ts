@@ -16,11 +16,12 @@ export const verifyAccessToken = (req: NextRequest) => {
   }
 };
 
-export const verifyRefreshToken = (req: NextRequest, token: string) => {
+export const verifyRefreshToken = ( token: string) => {
   if (!token) return null;
 
   try {
-    return jwt.verify(token, JWT_REFRESH_SECRET);
+    return jwt.verify(token, JWT_REFRESH_SECRET) as UserDataInterface;
+
   } catch (err) {
     return null;
   }
@@ -33,6 +34,6 @@ export const createToken = (userData: UserDataInterface) => {
 export const createBothToken = (userData: UserDataInterface) => {
   return {
     accessToken: jwt.sign(userData, JWT_ACCESS_SECRET, { expiresIn: "1d" }),
-    refreshToken: jwt.sign(userData, JWT_ACCESS_SECRET, { expiresIn: "30d" }),
+    refreshToken: jwt.sign(userData, JWT_REFRESH_SECRET, { expiresIn: "30d" }),
   };
 };

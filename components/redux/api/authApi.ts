@@ -23,8 +23,15 @@ const authApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    getAccessToken: builder.mutation<AuthResponseConfig, string>({
+      query: (payload) => ({
+        url: "/auth/getAccessToken",
+        method: "POST",
+        body: { refreshToken: payload },
+      }),
+    }),
   }),
 });
 
-export default authApi
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export default authApi;
+export const { useLoginMutation, useRegisterMutation,useGetAccessTokenMutation } = authApi;

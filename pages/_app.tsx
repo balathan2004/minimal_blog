@@ -16,15 +16,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Minimal Blog</title>
       </Head>
       <Provider store={store}>
-    
-          <ReplyHolder>
-            <LoadingHolder>
-              <ContextWrapper>
-                <Component {...pageProps} />
-              </ContextWrapper>
-            </LoadingHolder>
-          </ReplyHolder>
-     
+        <ReplyHolder>
+          <LoadingHolder>
+            <ContextWrapper>
+              <Component {...pageProps} />
+            </ContextWrapper>
+          </LoadingHolder>
+        </ReplyHolder>
       </Provider>
     </>
   );
