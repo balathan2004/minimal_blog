@@ -15,7 +15,6 @@ const SignIn: FC = () => {
   });
   const router = useRouter();
 
-  const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
   const [error, setError] = useState("");
   const [passError, setPassError] = useState(false);
@@ -48,19 +47,16 @@ const SignIn: FC = () => {
       userData.password.length > 5 &&
       !passError
     ) {
-      setLoading(true);
-      const response = await login({ ...userData }).unwrap();
+      const response = await login(userData).unwrap();
       setReply(response.message);
-      setLoading(false);
+
       setError(response.message);
 
       if (response) {
-        console.log({response});
-        console.log("Login successful");
         setTimeout(() => {
-          // router.push("/blog");
+          router.push("/blog");
           console.log("Redirecting to Homepage");
-        }, 2000);
+        }, 1000);
       } else {
         // Login failed
         console.error("Login failed");
@@ -118,9 +114,9 @@ const SignIn: FC = () => {
                 fullWidth
                 variant="contained"
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
               >
-                {loading ? "Logging in" : "Login"}
+                {isLoading ? "Logging in" : "Login"}
               </Button>
             </div>
           </form>

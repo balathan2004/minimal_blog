@@ -22,23 +22,27 @@ export const NavUsers: NavBarType = [
 const initialState = {
   userData: {} as UserDataInterface,
   accessToken: "",
-  refreshToken: "",
   navState: NavGuests,
 };
 
 const authSlice = createSlice({
   initialState: initialState,
-  name: "authSlice",
-  reducers: {},
+  name: "auth",
+  reducers: {
+    setAccessToken: (state, { payload }) => {
+      state.accessToken = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         state.userData = payload.credentials || ({} as UserDataInterface);
         (state.accessToken = payload.accessToken || ""),
-          (state.refreshToken = payload.refreshToken || ""),
+  
           (state.navState = NavUsers);
-        localStorage.setItem("minimalBlogRefreshToken", state.refreshToken);
+        if (payload.refreshToken)
+          localStorage.setItem("minimalBlogRefreshToken", payload.refreshToken);
       }
     ),
       builder.addMatcher(
@@ -46,7 +50,6 @@ const authSlice = createSlice({
         (state, { payload }) => {
           state.userData = payload.credentials || ({} as UserDataInterface);
           (state.accessToken = payload.accessToken || ""),
-            (state.refreshToken = payload.refreshToken || ""),
             (state.navState = NavUsers);
         }
       );
@@ -56,5 +59,5 @@ const authSlice = createSlice({
 export const useAuth = () => {
   return useSelector((state: RootState) => state.auth);
 };
-
+export const { setAccessToken } = authSlice.actions;
 export default authSlice.reducer;

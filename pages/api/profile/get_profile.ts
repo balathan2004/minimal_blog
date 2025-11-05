@@ -22,6 +22,8 @@ async function handler (
   try {
 
     const userId = req.query.userId as string;
+
+    console.log({req});
     console.log(userId);
 
     if (userId) {

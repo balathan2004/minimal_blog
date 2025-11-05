@@ -27,7 +27,7 @@ export const verifyRefreshToken = ( token: string) => {
   }
 };
 
-export const createToken = (userData: UserDataInterface) => {
+export const createAccessToken = (userData: UserDataInterface) => {
   return jwt.sign(userData, JWT_ACCESS_SECRET, { expiresIn: "10d" });
 };
 

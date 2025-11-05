@@ -6,11 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { UserDataInterface } from "@/components/interfaces";
 import { DummyUserData } from "@/components/interfaces";
 import withMiddleware from "@/libs/cors";
-import { verifyRefreshToken } from "@/libs/jwt";
-import jwt from "jsonwebtoken";
-
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET as string;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
+import { createAccessToken, verifyRefreshToken } from "@/libs/jwt";
 
 async function handler(
   req: NextApiRequest,
@@ -19,37 +15,37 @@ async function handler(
   try {
     const refreshToken = (req.body.refreshToken as string) || "";
 
-    console.log({ refreshToken });
-
     const cred = verifyRefreshToken(refreshToken);
 
-    console.log({ cred });
-
-    if (!cred) return;
+    if (!cred) {
+      res.status(300).json({
+        message: "token not found",
+        credentials: null,
+      });
+      return;
+    }
 
     const userRef = doc(firestore, "users", cred.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      res.json({
-        message: "login failed",
-
-        credentials: DummyUserData,
+      res.status(300).json({
+        message: "user doesnt exist",
+        credentials: null,
       });
       return;
     }
     const userData = userDoc.data() as UserDataInterface;
-    res.json({
+    res.status(200).json({
       message: "login success",
-
       credentials: userData,
+      accessToken: createAccessToken(userData),
     });
   } catch (err) {
     console.log(err);
 
-    res.json({
-      message: "login failed",
-
+    res.status(300).json({
+      message: "error caught",
       credentials: null,
     });
   }

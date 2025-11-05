@@ -14,8 +14,9 @@ export default function ContextWrapper({
 
   useEffect(() => {
     const token = localStorage.getItem("minimalBlogRefreshToken");
+
     if (!token) return;
-    getAccessToken(token).unwrap().then(console.log).catch(console.log);
+    getAccessToken(token)
   }, []);
 
   return (
