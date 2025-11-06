@@ -39,7 +39,6 @@ const authSlice = createSlice({
       (state, { payload }) => {
         state.userData = payload.credentials || ({} as UserDataInterface);
         (state.accessToken = payload.accessToken || ""),
-  
           (state.navState = NavUsers);
         if (payload.refreshToken)
           localStorage.setItem("minimalBlogRefreshToken", payload.refreshToken);

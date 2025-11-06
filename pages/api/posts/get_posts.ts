@@ -8,7 +8,7 @@ async function handler(
   res: NextApiResponse<PostResponseConfig>
 ) {
   if (req.method != "GET") {
-    res.json({ status: 400, message: "Bad Request", postData: [] });
+    res.status(400).json({ message: "Bad Request", postData: [] });
     return;
   }
   try {
@@ -24,17 +24,17 @@ async function handler(
 
     const paginatedPosts = postData.reverse().slice(startIndex, endIndex);
 
-    const sortedPosts = [...paginatedPosts].sort((a, b) => 
-      new Date(b.post_time).getTime() - new Date(a.post_time).getTime()
+    const sortedPosts = [...paginatedPosts].sort(
+      (a, b) =>
+        new Date(b.post_time).getTime() - new Date(a.post_time).getTime()
     );
-    res.json({
-      status: 200,
+    res.status(200).json({
       message: "fetch success",
       postData: sortedPosts,
     });
   } catch (err) {
     console.log(err);
-    res.json({ status: 400, message: "error fetching docs", postData: [] });
+    res.status(404).json({ message: "error fetching docs", postData: [] });
   }
 }
 

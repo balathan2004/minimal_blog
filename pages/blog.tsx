@@ -105,8 +105,8 @@ function Loading() {
 export const getServerSideProps: GetServerSideProps = async () => {
   const apiUrl =
     process.env.NODE_ENV === "production"
-      ? `${process.env.DOMAIN_URL?.replace(/^"|"$/g, "")}/api/get_posts?page=0&limit=5`
-      : "http://localhost:3000/api/get_posts?page=0&limit=5";
+      ? `${process.env.DOMAIN_URL?.replace(/^"|"$/g, "")}/api/posts/get_posts?page=0&limit=5`
+      : "http://localhost:3000/api/posts/get_posts?page=0&limit=5";
 
   try {
     const response = await fetch(apiUrl, {

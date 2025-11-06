@@ -9,72 +9,85 @@ import {
 import styles from "@/styles/profile.module.css";
 import Image from "next/image";
 import SinglePost from "@/components/elements/singlePost";
+import { Router, useRouter } from "next/router";
+import { useGetProfileQuery } from "@/components/redux/api/profileApi";
 
-interface Props {
-  postData: PostDataInterface[] | null;
-  userData: UserDataInterface | null;
-}
+const Profile = () => {
+  const router = useRouter();
 
-const Profile: FC<Props> = ({ postData, userData }) => {
-  console.log(postData, userData);
-  if (postData && userData) {
-    return (
-      <div className="container">
-        <div className="container_spacer"></div>
-        <div className={styles.profile_container}>
+  const id = (router.query.id as string) || "";
+
+  const { data: profileData, isLoading } = useGetProfileQuery(id, {
+    skip: !id,
+  });
+
+  return (
+    <div className="container">
+      <div className="container_spacer"></div>
+      <div className={styles.profile_container}>
         <h1>User Profile</h1>
-          <header>
-            <div className={styles.img_container}>
-              <img alt="error loading image" src={userData.profile_url} />
-            </div>
+        <header>
+          <div className={styles.img_container}>
+            <img
+              alt="error loading image"
+              src={profileData?.userData?.profile_url}
+            />
+          </div>
 
-            <div className={styles.profile_details}>
-              <span className={styles.username}>{userData.display_name}</span>
-              <span>{userData.email}</span>
-            </div>
-          </header>
-          <main>
-            <h2>User Posts</h2>
-            {postData.map((item) => {
-              return <SinglePost isAuthor={true} key={item.post_name} postData={item} />;
-            })}
-          </main>
-        </div>
-        <div className="container_spacer"></div>
+          <div className={styles.profile_details}>
+            <span className={styles.username}>
+              {profileData?.userData?.display_name}
+            </span>
+            <span>{profileData?.userData?.email}</span>
+          </div>
+        </header>
+        <main>
+          <h2>User Posts</h2>
+          {profileData?.postData?.map((item) => {
+            return (
+              <SinglePost
+                isAuthor={true}
+                key={item.post_name}
+                postData={item}
+              />
+            );
+          })}
+        </main>
       </div>
-    );
-  }
+      <div className="container_spacer"></div>
+    </div>
+  );
 };
 
 export default Profile;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext<ParsedUrlQuery>
-) => {
-  try {
-    const { query } = context;
-    const { id } = query;
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext<ParsedUrlQuery>
+// ) => {
+//   try {
+//     const { query } = context;
+//     const { id } = query;
 
-    const apiUrl =
-      process.env.NODE_ENV === "production"
-        ? `${process.env.DOMAIN_URL?.replace(
-            /^"|"$/g,
-            ""
-          )}/api/get_profile?userId=${id}`
-        : `http://localhost:3000/api/get_profile?userId=${id}`;
-    const response = await fetch(apiUrl);
-    const res: ProfileResponseConfig = await response.json();
+//     const apiUrl =
+//       process.env.NODE_ENV === "production"
+//         ? `${process.env.DOMAIN_URL?.replace(
+//             /^"|"$/g,
+//             ""
+//           )}/api/get_profile?userId=${id}`
+//         : `http://localhost:3000/api/get_profile?userId=${id}`;
+//     const response = await fetch(apiUrl);
+//     const res: ProfileResponseConfig = await response.json();
 
-    console.log(res);
+//     console.log(res);
 
-    if (res.status === 200) {
-      return {
-        props: { postData: res.postData, userData: res.userData },
-      };
-    } else {
-      return { props: { postData: null } };
-    }
-  } catch (e) {
-    return { props: { postData: null } };
-  }
-};
+//     if (response.ok) {
+//       return {
+//         props: { postData: res.postData, userData: res.userData },
+//       };
+//     } else {
+//       return { props: { postData: null } };
+//     }
+//   } catch (e) {
+//     return { props: { postData: null } };
+//   }
+// };

@@ -1,5 +1,4 @@
 import {
-  AuthResponseConfig,
   ProfileResponseConfig,
 } from "@/components/interfaces";
 import { baseApi } from "./baseApi";
@@ -13,7 +12,7 @@ const profileApi = baseApi.injectEndpoints({
     }),
     getProfile: builder.query<ProfileResponseConfig, string>({
       query: (userId) => ({
-        url: `/profile/get_profile/${userId}`,
+        url: `/profile/get_profile?userId=${userId}`,
         method: "POST",
       }),
     }),

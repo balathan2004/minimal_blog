@@ -15,57 +15,43 @@ import {
 } from "@/components/interfaces";
 import withMiddleware from "@/libs/cors";
 
-async function handler (
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ProfileResponseConfig>
 ) {
   try {
-
     const userId = req.query.userId as string;
 
-    console.log({req});
-    console.log(userId);
-
-    if (userId) {
-      const collectionData = collection(firestore, "posts");
-      const userDoc = await getDoc(doc(firestore, "users", userId));
-      const checkAuthorizedUser = userDoc.exists();
-
-      if (checkAuthorizedUser) {
-        const queryDoc = query(
-          collectionData,
-          where("post_user_id", "==", userId)
-        );
-        const postData = (await getDocs(queryDoc)).docs.map(
-          (doc) => doc.data() as PostDataInterface
-        );
-        const userData = userDoc.data() as UserDataInterface;
-
-        res.json({
-          status: 200,
-          message: "fetch success",
-          postData: postData,
-          userData: userData,
-        });
-      } else {
-        res.json({
-          status: 400,
-          message: "error fetching docs",
-          postData: null,
-          userData: null,
-        });
-      }
-    } else {
-      res.json({
-        status: 400,
-        message: "wrong profile ",
+    if (!userId) {
+      res.status(400).json({
+        message: "Bad Request Missing Params",
         postData: null,
         userData: null,
       });
     }
+
+    const collectionData = collection(firestore, "posts");
+    const userDoc = await getDoc(doc(firestore, "users", userId));
+    const checkAuthorizedUser = userDoc.exists();
+
+    if (checkAuthorizedUser) {
+      const queryDoc = query(
+        collectionData,
+        where("post_user_id", "==", userId)
+      );
+      const postData = (await getDocs(queryDoc)).docs.map(
+        (doc) => doc.data() as PostDataInterface
+      );
+      const userData = userDoc.data() as UserDataInterface;
+
+      res.status(200).json({
+        message: "fetch success",
+        postData: postData,
+        userData: userData,
+      });
+    }
   } catch (err) {
-    res.json({
-      status: 400,
+    res.status(404).json({
       message: "error fetching docs",
       postData: null,
       userData: null,
@@ -73,5 +59,4 @@ async function handler (
   }
 }
 
-
-export default withMiddleware(handler as any)
+export default withMiddleware(handler as any);
