@@ -13,11 +13,9 @@ async function handler(
   res: NextApiResponse<AuthResponseConfig>
 ) {
   try {
-    const refreshToken = (req.body.refreshToken as string) || "";
+    const uid = req.cookies.minimal_blog_uid || false;
 
-    const cred = verifyRefreshToken(refreshToken);
-
-    if (!cred) {
+    if (!uid) {
       res.status(300).json({
         message: "token not found",
         credentials: null,
@@ -25,7 +23,7 @@ async function handler(
       return;
     }
 
-    const userRef = doc(firestore, "users", cred.uid);
+    const userRef = doc(firestore, "users", uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
@@ -37,9 +35,8 @@ async function handler(
     }
     const userData = userDoc.data() as UserDataInterface;
     res.status(200).json({
-      message: "login success",
+      message: "credentials fetched",
       credentials: userData,
-      accessToken: createAccessToken(userData),
     });
   } catch (err) {
     console.log(err);

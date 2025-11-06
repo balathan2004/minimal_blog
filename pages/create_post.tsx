@@ -6,6 +6,7 @@ import { Button, TextField } from "@mui/material";
 import Head from "next/head";
 import { useReplyContext } from "@/components/context/Reply_context";
 import { useLoadingContext } from "@/components/context/loading_context";
+import { useAuth } from "@/components/redux/api/authSlice";
 const SignIn: FC = () => {
   const [image, setImage] = useState<null | Blob>(null);
   const [showImage, setShowImage] = useState("");
@@ -15,10 +16,12 @@ const SignIn: FC = () => {
   const { loading, setLoading } = useLoadingContext();
   const { setReply } = useReplyContext();
 
+  const { userData } = useAuth();
+
   const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (caption.length > 0 && image ) {
+    if (caption.length > 0 && image) {
       console.log("submitted");
       setLoading(true);
       const form = new FormData();
@@ -28,8 +31,8 @@ const SignIn: FC = () => {
       // form.append("username", userCred.display_name);
       const response = await SendFile({
         data: form,
-        route:"/api/create_post"
-          // "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
+        route: "/api/create_post",
+        // "https://file-handler-server-production.up.railway.app/minimal_blog/create_post",
       });
 
       setLoading(false);
@@ -65,15 +68,7 @@ const SignIn: FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (!userCred) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [userCred]);
-
-  if (!userCred) {
+  if (!userData) {
     return (
       <div className="container">
         <div className="container_spacer"></div>
@@ -94,8 +89,8 @@ const SignIn: FC = () => {
           <article>
             <h1>Create Post</h1>
             <header>
-              <img src={userCred.profile_url}></img>
-              <span>{userCred.display_name}</span>
+              <img src={userData.profile_url}></img>
+              <span>{userData.display_name}</span>
             </header>
             <form onSubmit={handleForm}>
               <TextField

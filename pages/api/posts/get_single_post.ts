@@ -12,19 +12,19 @@ async function handler(
 ) {
   const post_name = req.query.post_name as string;
 
-  if (post_name) {
-    console.log(post_name);
+  console.log("accessed single post");
 
-    const docRef = doc(firestore, "posts", post_name);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("snap available");
-      const docData = docSnap.data() as PostDataInterface;
-      res.status(200).json({ message: "document fetched", postData: docData });
-    } else {
-      res.status(404).json({ message: "document not fetched", postData: null });
-      console.log("snap not available");
-    }
+  if (!post_name) {
+    res.status(404).json({ message: "document not fetched", postData: null });
+    return;
+  }
+
+  const docRef = doc(firestore, "posts", post_name);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    console.log("snap available");
+    const docData = docSnap.data() as PostDataInterface;
+    res.status(200).json({ message: "document fetched", postData: docData });
   } else {
     res.status(404).json({ message: "document not fetched", postData: null });
     console.log("snap not available");

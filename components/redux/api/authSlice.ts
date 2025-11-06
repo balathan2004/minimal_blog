@@ -38,18 +38,15 @@ const authSlice = createSlice({
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         state.userData = payload.credentials || ({} as UserDataInterface);
-        (state.accessToken = payload.accessToken || ""),
-          (state.navState = NavUsers);
-        if (payload.refreshToken)
-          localStorage.setItem("minimalBlogRefreshToken", payload.refreshToken);
+        state.navState = NavUsers;
       }
     ),
       builder.addMatcher(
-        authApi.endpoints.getAccessToken.matchFulfilled,
+        authApi.endpoints.getLoginCred.matchFulfilled,
         (state, { payload }) => {
           state.userData = payload.credentials || ({} as UserDataInterface);
-          (state.accessToken = payload.accessToken || ""),
-            (state.navState = NavUsers);
+
+          state.navState = NavUsers;
         }
       );
   },

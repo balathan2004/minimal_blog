@@ -23,15 +23,17 @@ const authApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-    getAccessToken: builder.mutation<AuthResponseConfig, string>({
+    getLoginCred: builder.query<AuthResponseConfig, void>({
       query: (payload) => ({
-        url: "/auth/getAccessToken",
-        method: "POST",
-        body: { refreshToken: payload },
+        url: "/auth/get_login_cred",
       }),
     }),
   }),
 });
 
 export default authApi;
-export const { useLoginMutation, useRegisterMutation,useGetAccessTokenMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetLoginCredQuery,
+} = authApi;

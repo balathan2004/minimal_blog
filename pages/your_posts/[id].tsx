@@ -7,28 +7,30 @@ import {
 } from "@/components/interfaces";
 import EditPost from "@/components/elements/edit_post";
 import { useRouter } from "next/router";
+import { useAuth } from "@/components/redux/api/authSlice";
 interface Props {
   postData: PostDataInterface | null;
 }
 
 const Page: FC<Props> = ({ postData }) => {
-
   const router = useRouter();
 
+  const { userData } = useAuth();
+
   useEffect(() => {
-    if (userCred && postData) {
-      if (userCred.uid != postData.post_user_id) {
+    if (userData && postData) {
+      if (userData.uid != postData.post_user_id) {
         router.push("/blog");
       }
     }
-  }, [userCred]);
+  }, [userData]);
 
   if (postData) {
     return (
       <div className="container">
         <div className="container_spacer"></div>
         <EditPost
-          isAuthor={userCred?.uid == postData.post_user_id}
+          isAuthor={userData?.uid == postData.post_user_id}
           postData={postData}
         ></EditPost>
         <div className="container_spacer"></div>
@@ -65,12 +67,15 @@ export const getServerSideProps = async (
     const response = await fetch(apiUrl);
     const res: SinglePostResponseConfig = await response.json();
 
-    if (res.status === 200) {
+    if (response.ok) {
       return {
         props: { postData: res.postData },
       };
     } else {
       return { props: { postData: null } };
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+     return { props: { postData: null } };
+  }
 };

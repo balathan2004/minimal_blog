@@ -4,8 +4,6 @@ export interface ResponseConfig {
 
 export interface AuthResponseConfig extends ResponseConfig {
   credentials: UserDataInterface|null;
-  accessToken?: string;
-  refreshToken?: string;
 }
 
 export interface PostResponseConfig extends ResponseConfig {

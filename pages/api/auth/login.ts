@@ -8,7 +8,7 @@ import { FirebaseError } from "firebase/app";
 import { UserDataInterface } from "@/components/interfaces";
 import cors from "@/libs/cors";
 import { createBothToken } from "@/libs/jwt";
-
+import { setCookie } from "cookies-next";
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponseConfig>
@@ -17,8 +17,10 @@ async function handler(
     const { email, password } = req.body;
     console.log("Login Request from ", { email });
 
+    const isDevEnv = process.env.NODE_ENV == "production";
+
     if (!email || !password) {
-      res.json({
+      res.status(401).json({
         message: "fields missing",
         credentials: null,
       });
@@ -30,7 +32,7 @@ async function handler(
     ).user;
 
     if (!fetchedUser.emailVerified) {
-      res.json({
+      res.status(304).json({
         message: "Youre Not Verified",
         credentials: null,
       });
@@ -51,24 +53,30 @@ async function handler(
 
     const userData = userDoc.data() as UserDataInterface;
 
-    const tokens = createBothToken(userData);
+    setCookie("minimal_blog_uid", userData.uid, {
+      req: req,
+      res: res,
+      maxAge: 2592000000,
+      httpOnly: true,
+      sameSite: isDevEnv ? "none" : "lax",
+      secure: isDevEnv,
+    });
 
-    res.json({
+    res.status(200).json({
       message: "login success",
       credentials: { ...userData },
-      ...tokens,
     });
   } catch (err) {
     if (err instanceof FirebaseError) {
       console.log(err.message);
-      res.json({
+      res.status(404).json({
         message: err.message,
         credentials: null,
       });
     } else {
       console.log(err);
 
-      res.json({
+      res.status(400).json({
         message: "login failed",
         credentials: null,
       });
